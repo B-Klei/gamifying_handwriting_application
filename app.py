@@ -1,13 +1,15 @@
 from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
-import json
+import csv
 from gamification import *
 
 # Open file and convert to json
-file = open("dummy.json", "r")
-jsonContents = file.read()
+with open("dummy.csv", mode='r') as file:
+    csv_reader = csv.DictReader(file)
+    data = []
 
-data = json.loads(jsonContents)
+    for row in csv_reader:
+        data.append(row)
 
 # Dash
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -34,27 +36,29 @@ x = "10 exercises"  # temporary
 
 # Program
 # Points, badges calculation
-for exercise in data["exercises"]:
+for attempt in data:
     exercisesCompleted += 1
     totalExercisePoints = 0
 
-    for parameter in exercise["parameters"]:
-        if parameter["name"] == "accuracy":
-            accuracyPoints = assign_points(parameter["standard deviation"], stdLimit, pointLimit)
-            accuracyBadges += assign_badges(accuracyPoints, pointLimit)
-            totalExercisePoints += accuracyPoints
+    # Accuracy
+    stdAccuracy = attempt['accuracy_std']
+    accuracyPoints = assign_points(float(stdAccuracy), stdLimit, pointLimit)
+    accuracyBadges += assign_badges(accuracyPoints, pointLimit)
+    totalExercisePoints += accuracyPoints
 
-        elif parameter["name"] == "tilt":
-            tiltPoints = assign_points(parameter["standard deviation"], stdLimit, pointLimit)
-            tiltBadges += assign_badges(tiltPoints, pointLimit)
-            totalExercisePoints += tiltPoints
+    # Tilt
+    stdTilt = attempt['tilt_std']
+    tiltPoints = assign_points(float(stdTilt), stdLimit, pointLimit)
+    tiltBadges += assign_badges(accuracyPoints, pointLimit)
+    totalExercisePoints += tiltPoints
 
-        elif parameter["name"] == "pressure":
-            pressurePoints = assign_points(parameter["standard deviation"], stdLimit, pointLimit)
-            pressureBadges += assign_badges(pressurePoints, pointLimit)
-            totalExercisePoints += pressurePoints
+    # Pressure
+    stdPressure = attempt['pressure_std']
+    pressurePoints = assign_points(float(stdPressure), stdLimit, pointLimit)
+    pressureBadges += assign_badges(pressurePoints, pointLimit)
+    totalExercisePoints += pressurePoints
 
-        totalPoints += totalExercisePoints
+    totalPoints += totalExercisePoints
 
 # Layout
 """app.layout = html.Div(
@@ -140,7 +144,7 @@ app.layout = html.Div(
                         (
                             dbc.Progress(value=progress_bar(exercisesCompleted, 10),
                                          color="purple", label=exercisesCompleted,
-                                         style={"height": "20px", "width":"80%", "display":"inline-block"}),
+                                         style={"height": "20px", "width":"80%", "display": "inline-block"}),
                             "grey badge"
                         )
                     )
@@ -187,5 +191,3 @@ app.layout = html.Div(
 
 if __name__ == "__main__":
     app.run_server(debug=True)
-
-file.close()
