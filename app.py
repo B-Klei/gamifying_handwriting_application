@@ -14,29 +14,29 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Variables
 # limits
-stdLimit = 1.5  #
-pointLimit = 20  # 20 points = 20% deviation acceptable
+stdLimit = 1.5  # highest standard deviation for which a badge is awarded
+pointLimit = 80  # points awarded for achieving stdLimit
 
 # program
-exercisesCompleted = 0
-totalExercisePoints = 0
-totalPoints = 0
+exercisesCompleted = 0  # number of exercises completed
+totalExercisePoints = 0  # total points earned during one exercise
+totalPoints = 0  # total points earned for all completed exercises
 
-accuracyPoints = 0
-tiltPoints = 0
-pressurePoints = 0
+accuracyPoints = 0  # points earned for accuracy
+tiltPoints = 0  # points earned for tilt
+pressurePoints = 0  # points earned for pressure
 
-accuracyBadges = 0
-tiltBadges = 0
-pressureBadges = 0
+accuracyBadges = 0  # number of badges awarded for accuracy
+tiltBadges = 0  # number of badges awarded for tilt
+pressureBadges = 0  # number of badges awarded for pressure
 
 x = "10 exercises"  # temporary
 
 # Program
 # Points, badges calculation
 for exercise in data["exercises"]:
-    exercisesCompleted += 1
-    totalExercisePoints = 0
+    exercisesCompleted += 1  # adds 1 to the number of exercises
+    totalExercisePoints = 0  # sets total points earned during one exercise to 0
 
     for parameter in exercise["parameters"]:
         if parameter["name"] == "accuracy":
@@ -188,4 +188,4 @@ app.layout = html.Div(
 if __name__ == "__main__":
     app.run_server(debug=True)
 
-file.close()
+file.close()  # closes dummy.json
