@@ -17,7 +17,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # Variables
 # limits
 stdLimit = 1.5  #
-pointLimit = 20  # 20 points = 20% deviation acceptable
+pointLimit = 80  #
 
 # program
 exercisesCompleted = 0
@@ -32,7 +32,12 @@ accuracyBadges = 0
 tiltBadges = 0
 pressureBadges = 0
 
-x = "10 exercises"  # temporary
+# Point lists
+accuracyPointList = []  # list of all the accuracy points achieved
+tiltPointList = []  # list of all the tilt points achieved
+pressurePointList = []  # list of all the pressure points achieved
+
+allGoals = [1, 5, 10, 25, 50, 100]
 
 # Program
 # Points, badges calculation
@@ -42,20 +47,23 @@ for attempt in data:
 
     # Accuracy
     stdAccuracy = attempt['accuracy_std']
-    accuracyPoints = assign_points(float(stdAccuracy), stdLimit, pointLimit)
-    accuracyBadges += assign_badges(accuracyPoints, pointLimit)
+    accuracyPoints = assign_points(float(stdAccuracy), stdLimit, 100-pointLimit)
+    accuracyPointList.append(accuracyPoints)
+    accuracyBadges += assign_badges(accuracyPoints, 100-pointLimit)
     totalExercisePoints += accuracyPoints
 
     # Tilt
     stdTilt = attempt['tilt_std']
-    tiltPoints = assign_points(float(stdTilt), stdLimit, pointLimit)
-    tiltBadges += assign_badges(accuracyPoints, pointLimit)
+    tiltPoints = assign_points(float(stdTilt), stdLimit, 100-pointLimit)
+    tiltPointList.append(tiltPoints)
+    tiltBadges += assign_badges(accuracyPoints, 100-pointLimit)
     totalExercisePoints += tiltPoints
 
     # Pressure
     stdPressure = attempt['pressure_std']
-    pressurePoints = assign_points(float(stdPressure), stdLimit, pointLimit)
-    pressureBadges += assign_badges(pressurePoints, pointLimit)
+    pressurePoints = assign_points(float(stdPressure), stdLimit, 100-pointLimit)
+    pressurePointList.append(pressurePoints)
+    pressureBadges += assign_badges(pressurePoints, 100-pointLimit)
     totalExercisePoints += pressurePoints
 
     totalPoints += totalExercisePoints
@@ -138,53 +146,92 @@ app.layout = html.Div(
         dbc.Card(
             dbc.CardBody(
                 [
-                    html.H4("Exercises"),
-                    html.P(("Next badge: ", x)),
-                    html.P(
-                        (
-                            dbc.Progress(value=progress_bar(exercisesCompleted, 10),
-                                         color="purple", label=exercisesCompleted,
-                                         style={"height": "20px", "width":"80%", "display": "inline-block"}),
-                            "grey badge"
-                        )
+                    html.H4("Exercise results"),
+                    html.Div(
+                        children=
+                        [
+                            "Accuracy: ",
+                            accuracyPoints,
+                            dbc.Progress(value=progress_bar(accuracyPoints, pointLimit),
+                                         color="#ff0055", label=accuracyPoints,
+                                         style={"height": "20px", "width": "50%", "display": "inline-block"}),
+                            "badge" if (accuracyPoints >= pointLimit) else "grey badge"
+                        ]
+                    ),
+                    html.Div(
+                        children=
+                        [
+                            "Tilt: ",
+                            tiltPoints,
+                            dbc.Progress(value=progress_bar(tiltPoints, pointLimit),
+                                         color="#070091", label=tiltPoints,
+                                         style={"height": "20px", "width": "50%", "display": "inline-block"}),
+                            "badge" if (tiltPoints >= pointLimit) else "grey badge"
+                        ]
+                    ),
+                    html.Div(
+                        children=
+                        [
+                            "Pressure: ",
+                            pressurePoints,
+                            dbc.Progress(value=progress_bar(pressurePoints, pointLimit),
+                                         color="#02c42f", label=pressurePoints,
+                                         style={"height": "20px", "width": "50%", "display": "inline-block"}),
+                            "badge" if (pressurePoints >= pointLimit) else "grey badge"
+                        ]
                     )
+
                 ]
             ),
-            style={"width": "50%", "display":"inline-block"},
+            style={"width": "50%", "display": "inline-block"},
         ),
         dbc.Card(
             dbc.CardBody(
                 [
                     html.H4("Exercises"),
-                    html.P(("Next badge: ", x)),
+                    html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
                     html.P(
                         (
-                            dbc.Progress(value=progress_bar(exercisesCompleted, 10),
+                            dbc.Progress(value=progress_bar(exercisesCompleted,
+                                                            next_goal(exercisesCompleted, allGoals)),
                                          color="purple", label=exercisesCompleted,
-                                         style={"height": "20px", "width":"80%", "display":"inline-block"}),
+                                         style={"height": "20px", "width": "80%", "display": "inline-block"}),
                             "grey badge"
                         )
                     )
                 ]
             ),
-            style={"width": "50%", "display":"inline-block"},
+            style={"width": "50%", "display": "inline-block"},
         ),
         dbc.Card(
             dbc.CardBody(
-                [
-                    html.H4("Exercises"),
-                    html.P(("Next badge: ", x)),
-                    html.P(
-                        (
-                            dbc.Progress(value=progress_bar(exercisesCompleted, 10),
-                                         color="purple", label=exercisesCompleted,
-                                         style={"height": "20px", "width":"80%", "display":"inline-block"}),
-                            "grey badge"
-                        )
-                    )
-                ]
+                dcc.Graph(
+                    figure={
+                        "data": [
+                            {
+                                "x": [x for x in range(exercisesCompleted+1)],
+                                "y": accuracyPointList,
+                                "type": "lines",
+                                "name": "accuracy",
+                            },
+{
+                                "x": [x for x in range(exercisesCompleted+1)],
+                                "y": tiltPointList,
+                                "type": "lines",
+                                "name": "tilt",
+                            },
+{
+                                "x": [x for x in range(exercisesCompleted+1)],
+                                "y": pressurePointList,
+                                "type": "lines",
+                                "name": "pressure",
+                            },
+                        ],
+                        "layout": {"title": "Average Price of Avocados"},
+                    },
+                ),
             ),
-            style={"width": "50%", "display":"inline-block"},
+            style={"width": "50%", "display": "inline-block"},
         )
         ]
 )
