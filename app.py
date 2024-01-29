@@ -155,36 +155,42 @@ app.layout = html.Div(
                     html.Div(
                         children=
                         [
-                            "Accuracy: ",
-                            accuracyPoints,
-                            dbc.Progress(value=progress_bar(accuracyPoints, pointLimit),
-                                         color=accuracyColour, label=accuracyPoints,
-                                         style={"height": "20px", "width": "50%", "display": "inline-block"}),
-                            "badge" if (accuracyPoints >= pointLimit) else "grey badge"
-                        ]
+                            html.P("Accuracy:"),
+                            html.P("Tilt:"),
+                            html.P("Pressure:")
+                        ],
+                        style={"display": "inline-block"}
                     ),
                     html.Div(
                         children=
                         [
-                            "Tilt: ",
-                            tiltPoints,
-                            dbc.Progress(value=progress_bar(tiltPoints, pointLimit),
-                                         color=tiltColour, label=tiltPoints,
-                                         style={"height": "20px", "width": "50%", "display": "inline-block"}),
-                            "badge" if (tiltPoints >= pointLimit) else "grey badge"
-                        ]
+                            html.P(accuracyPoints),
+                            html.P(tiltPoints),
+                            html.P(pressurePoints)
+                        ],
+                        style={"display": "inline-block"}
                     ),
                     html.Div(
                         children=
                         [
-                            "Pressure: ",
-                            pressurePoints,
-                            dbc.Progress(value=progress_bar(pressurePoints, pointLimit),
-                                         color=pressureColour, label=pressurePoints,
-                                         style={"height": "20px", "width": "50%", "display": "inline-block"}),
-                            "badge" if (pressurePoints >= pointLimit) else "grey badge"
-                        ]
-                    )
+                            html.P(dbc.Progress(value=progress_bar(accuracyPoints, pointLimit), color=accuracyColour,
+                                                label=accuracyPoints, style={"height": "20px", "width": "400px"})),
+                            html.P(dbc.Progress(value=progress_bar(tiltPoints, pointLimit), color=tiltColour,
+                                                label=tiltPoints, style={"height": "20px", "width": "400px"})),
+                            html.P(dbc.Progress(value=progress_bar(pressurePoints, pointLimit), color=pressureColour,
+                                                label=pressurePoints, style={"height": "20px", "width": "400px"}))
+                        ],
+                        style={"display": "inline-block"}
+                    ),
+                    html.Div(
+                        children=
+                        [
+                            html.P("badge" if (accuracyPoints >= pointLimit) else "grey badge"),
+                            html.P("badge" if (tiltPoints >= pointLimit) else "grey badge"),
+                            html.P("badge" if (pressurePoints >= pointLimit) else "grey badge")
+                        ],
+                        style={"display": "inline-block"}
+                    ),
 
                 ]
             ),
