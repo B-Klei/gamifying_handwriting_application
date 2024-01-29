@@ -18,51 +18,15 @@ def assign_badges(points, point_limit):
     return badge
 
 
-# Main program
-"""def exercise_results(json_dict):
-    # Variables
-    global exercisesCompleted
+# Next goal
+def next_goal(achieved, goal_list):
+    i = 0
+    result = goal_list[0]
+    while achieved >= goal_list[i]:
+        result = goal_list[i+1]
+        i += 1
 
-    global totalExercisePoints
-    global totalPoints
-
-    global accuracyPoints
-    global tiltPoints
-    global pressurePoints
-
-    global accuracyBadges
-    global tiltBadges
-    global pressureBadges
-
-    exercisesCompleted = 0
-    totalPoints = 0
-
-    accuracyBadges = 0
-    tiltBadges = 0
-    pressureBadges = 0
-
-    # Points, badges calculation
-    for exercise in json_dict["exercises"]:
-        exercisesCompleted += 1
-        totalExercisePoints = 0
-
-        for parameter in exercise["parameters"]:
-            if parameter["name"] == "accuracy":
-                accuracyPoints = assign_points(parameter["standard deviation"], 1.5)
-                accuracyBadges += assign_badges(accuracyPoints)
-                totalExercisePoints += accuracyPoints
-
-            elif parameter["name"] == "tilt":
-                tiltPoints = assign_points(parameter["standard deviation"], 1.5)
-                tiltBadges += assign_badges(tiltPoints)
-                totalExercisePoints += tiltPoints
-
-            elif parameter["name"] == "pressure":
-                pressurePoints = assign_points(parameter["standard deviation"], 1.5)
-                pressureBadges += assign_badges(pressurePoints)
-                totalExercisePoints += pressurePoints
-
-            totalPoints += totalExercisePoints"""
+    return result
 
 
 # Progress bar
