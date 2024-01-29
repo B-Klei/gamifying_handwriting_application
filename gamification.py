@@ -4,6 +4,8 @@ def assign_points(standard_deviation, std_limit, point_limit):
     points = int(100 - (standard_deviation*100/(std_limit*100/point_limit)))
     # "limit*100/20" = std for which 0 points are assigned
     # assigns 100 points for std=0.0, 80 points for std=limit
+    if points < 0:
+        points = 0
 
     return points
 
