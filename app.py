@@ -39,6 +39,11 @@ pressurePointList = []  # list of all the pressure points achieved
 
 allGoals = [1, 5, 10, 25, 50, 100]
 
+# Colours
+accuracyColour = "#ff0055"
+tiltColour = "#070091"
+pressureColour = "#02c42f"
+
 # Program
 # Points, badges calculation
 for attempt in data:
@@ -153,7 +158,7 @@ app.layout = html.Div(
                             "Accuracy: ",
                             accuracyPoints,
                             dbc.Progress(value=progress_bar(accuracyPoints, pointLimit),
-                                         color="#ff0055", label=accuracyPoints,
+                                         color=accuracyColour, label=accuracyPoints,
                                          style={"height": "20px", "width": "50%", "display": "inline-block"}),
                             "badge" if (accuracyPoints >= pointLimit) else "grey badge"
                         ]
@@ -164,7 +169,7 @@ app.layout = html.Div(
                             "Tilt: ",
                             tiltPoints,
                             dbc.Progress(value=progress_bar(tiltPoints, pointLimit),
-                                         color="#070091", label=tiltPoints,
+                                         color=tiltColour, label=tiltPoints,
                                          style={"height": "20px", "width": "50%", "display": "inline-block"}),
                             "badge" if (tiltPoints >= pointLimit) else "grey badge"
                         ]
@@ -175,7 +180,7 @@ app.layout = html.Div(
                             "Pressure: ",
                             pressurePoints,
                             dbc.Progress(value=progress_bar(pressurePoints, pointLimit),
-                                         color="#02c42f", label=pressurePoints,
+                                         color=pressureColour, label=pressurePoints,
                                          style={"height": "20px", "width": "50%", "display": "inline-block"}),
                             "badge" if (pressurePoints >= pointLimit) else "grey badge"
                         ]
@@ -209,22 +214,25 @@ app.layout = html.Div(
                     figure={
                         "data": [
                             {
-                                "x": [x for x in range(exercisesCompleted+1)],
+                                "x": [x for x in range(1, exercisesCompleted+1)],
                                 "y": accuracyPointList,
                                 "type": "lines",
                                 "name": "accuracy",
+                                "line": dict(color=accuracyColour),
                             },
 {
-                                "x": [x for x in range(exercisesCompleted+1)],
+                                "x": [x for x in range(1, exercisesCompleted+1)],
                                 "y": tiltPointList,
                                 "type": "lines",
                                 "name": "tilt",
+                                "line": dict(color=tiltColour),
                             },
 {
-                                "x": [x for x in range(exercisesCompleted+1)],
+                                "x": [x for x in range(1, exercisesCompleted+1)],
                                 "y": pressurePointList,
                                 "type": "lines",
                                 "name": "pressure",
+                                "line": dict(color=pressureColour),
                             },
                         ],
                         "layout": {"title": "Average Price of Avocados"},
