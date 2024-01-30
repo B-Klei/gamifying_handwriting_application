@@ -207,7 +207,7 @@ app.layout = html.Div(
                                                             next_goal(exercisesCompleted, allGoals)),
                                          color="purple", label=exercisesCompleted,
                                          style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                            "grey badge"
+                            html.P("grey badge", style={"display": "inline-block"})
                         )
                     )
                 ]
