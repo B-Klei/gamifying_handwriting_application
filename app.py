@@ -241,7 +241,7 @@ app.layout = html.Div(
                                 "line": dict(color=pressureColour),
                             },
                         ],
-                        "layout": {"title": "Average Price of Avocados"},
+                        "layout": {"title": ""},
                     },
                 ),
             ),
