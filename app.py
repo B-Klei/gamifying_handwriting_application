@@ -2,6 +2,7 @@ from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
 import csv
 from gamification import *
+from attribute import *
 
 # Open file and convert to json
 with open("dummy.csv", mode='r') as file:
@@ -15,34 +16,19 @@ with open("dummy.csv", mode='r') as file:
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Variables
-# limits
-stdLimit = 1.5  #
+# misc
 pointLimit = 80  #
+allGoals = [1, 5, 10, 25, 50, 100]
 
-# program
+# exercises
 exercisesCompleted = 0
 totalExercisePoints = 0
 totalPoints = 0
 
-accuracyPoints = 0
-tiltPoints = 0
-pressurePoints = 0
-
-accuracyBadges = 0
-tiltBadges = 0
-pressureBadges = 0
-
-# Point lists
-accuracyPointList = []  # list of all the accuracy points achieved
-tiltPointList = []  # list of all the tilt points achieved
-pressurePointList = []  # list of all the pressure points achieved
-
-allGoals = [1, 5, 10, 25, 50, 100]
-
-# Colours
-accuracyColour = "#ff0055"
-tiltColour = "#070091"
-pressureColour = "#02c42f"
+# objects
+accuracy = Attribute(1.5, "#ff0055")
+tilt = Attribute(1.5, "#070091")
+pressure = Attribute(1.5, "#02c42f")
 
 # Program
 # Points, badges calculation
@@ -52,24 +38,24 @@ for attempt in data:
 
     # Accuracy
     stdAccuracy = attempt['accuracy_std']
-    accuracyPoints = assign_points(float(stdAccuracy), stdLimit, 100-pointLimit)
-    accuracyPointList.append(accuracyPoints)
-    accuracyBadges += assign_badges(accuracyPoints, 100-pointLimit)
-    totalExercisePoints += accuracyPoints
+    accuracy.points = assign_points(float(stdAccuracy), accuracy.std_limit, 100-pointLimit)
+    accuracy.point_list.append(accuracy.points)
+    accuracy.badges += assign_badges(accuracy.points, 100-pointLimit)
+    totalExercisePoints += accuracy.points
 
     # Tilt
     stdTilt = attempt['tilt_std']
-    tiltPoints = assign_points(float(stdTilt), stdLimit, 100-pointLimit)
-    tiltPointList.append(tiltPoints)
-    tiltBadges += assign_badges(accuracyPoints, 100-pointLimit)
-    totalExercisePoints += tiltPoints
+    tilt.points = assign_points(float(stdTilt), tilt.std_limit, 100-pointLimit)
+    tilt.point_list.append(tilt.points)
+    tilt.badges += assign_badges(tilt.points, 100-pointLimit)
+    totalExercisePoints += tilt.points
 
     # Pressure
     stdPressure = attempt['pressure_std']
-    pressurePoints = assign_points(float(stdPressure), stdLimit, 100-pointLimit)
-    pressurePointList.append(pressurePoints)
-    pressureBadges += assign_badges(pressurePoints, 100-pointLimit)
-    totalExercisePoints += pressurePoints
+    pressure.points = assign_points(float(stdPressure), pressure.std_limit, 100-pointLimit)
+    pressure.point_list.append(pressure.points)
+    pressure.badges += assign_badges(pressure.points, 100-pointLimit)
+    totalExercisePoints += pressure.points
 
     totalPoints += totalExercisePoints
 
@@ -164,30 +150,30 @@ app.layout = html.Div(
                     html.Div(
                         children=
                         [
-                            html.P(accuracyPoints),
-                            html.P(tiltPoints),
-                            html.P(pressurePoints)
+                            html.P(accuracy.points),
+                            html.P(tilt.points),
+                            html.P(pressure.points)
                         ],
                         style={"display": "inline-block"}
                     ),
                     html.Div(
                         children=
                         [
-                            html.P(dbc.Progress(value=progress_bar(accuracyPoints, pointLimit), color=accuracyColour,
-                                                label=accuracyPoints, style={"height": "20px", "width": "350px"})),
-                            html.P(dbc.Progress(value=progress_bar(tiltPoints, pointLimit), color=tiltColour,
-                                                label=tiltPoints, style={"height": "20px", "width": "350px"})),
-                            html.P(dbc.Progress(value=progress_bar(pressurePoints, pointLimit), color=pressureColour,
-                                                label=pressurePoints, style={"height": "20px", "width": "350px"}))
+                            html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit), color=accuracy.colour,
+                                                label=accuracy.points, style={"height": "20px", "width": "350px"})),
+                            html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit), color=tilt.colour,
+                                                label=tilt.points, style={"height": "20px", "width": "350px"})),
+                            html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit), color=pressure.colour,
+                                                label=pressure.points, style={"height": "20px", "width": "350px"}))
                         ],
                         style={"display": "inline-block"}
                     ),
                     html.Div(
                         children=
                         [
-                            html.P("badge" if (accuracyPoints >= pointLimit) else "grey badge"),
-                            html.P("badge" if (tiltPoints >= pointLimit) else "grey badge"),
-                            html.P("badge" if (pressurePoints >= pointLimit) else "grey badge")
+                            html.P("badge" if (accuracy.points >= pointLimit) else "grey badge"),
+                            html.P("badge" if (tilt.points >= pointLimit) else "grey badge"),
+                            html.P("badge" if (pressure.points >= pointLimit) else "grey badge")
                         ],
                         style={"display": "inline-block"}
                     ),
@@ -221,24 +207,24 @@ app.layout = html.Div(
                         "data": [
                             {
                                 "x": [x for x in range(1, exercisesCompleted+1)],
-                                "y": accuracyPointList,
+                                "y": accuracy.point_list,
                                 "type": "lines",
                                 "name": "accuracy",
-                                "line": dict(color=accuracyColour),
+                                "line": dict(color=accuracy.colour),
                             },
-{
+                            {
                                 "x": [x for x in range(1, exercisesCompleted+1)],
-                                "y": tiltPointList,
+                                "y": tilt.point_list,
                                 "type": "lines",
                                 "name": "tilt",
-                                "line": dict(color=tiltColour),
+                                "line": dict(color=tilt.colour),
                             },
-{
+                            {
                                 "x": [x for x in range(1, exercisesCompleted+1)],
-                                "y": pressurePointList,
+                                "y": pressure.point_list,
                                 "type": "lines",
                                 "name": "pressure",
-                                "line": dict(color=pressureColour),
+                                "line": dict(color=pressure.colour),
                             },
                         ],
                         "layout": {"title": ""},
