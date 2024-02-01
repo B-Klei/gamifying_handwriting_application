@@ -160,12 +160,15 @@ app.layout = html.Div(
                             html.Div(
                                 children=
                                 [
-                                    html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit), color=accuracy.colour,
-                                                        label=accuracy.points, style={"height": "20px", "width": "350px"})),
-                                    html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit), color=tilt.colour,
-                                                        label=tilt.points, style={"height": "20px", "width": "350px"})),
-                                    html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit), color=pressure.colour,
-                                                        label=pressure.points, style={"height": "20px", "width": "350px"}))
+                                    html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),
+                                                        color=accuracy.colour,
+                                                        style={"height": "20px", "width": "350px"})),
+                                    html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),
+                                                        color=tilt.colour,
+                                                        style={"height": "20px", "width": "350px"})),
+                                    html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),
+                                                        color=pressure.colour,
+                                                        style={"height": "20px", "width": "350px"}))
                                 ],
                                 style={"display": "inline-block"}
                             ),
@@ -217,14 +220,14 @@ app.layout = html.Div(
                                         "name": "accuracy",
                                         "line": dict(color=accuracy.colour),
                                     },
-        {
+                                    {
                                         "x": [x for x in range(1, exercisesCompleted+1)],
                                         "y": tilt.point_list,
                                         "type": "lines",
                                         "name": "tilt",
                                         "line": dict(color=tilt.colour),
                                     },
-        {
+                                    {
                                         "x": [x for x in range(1, exercisesCompleted+1)],
                                         "y": pressure.point_list,
                                         "type": "lines",
