@@ -174,11 +174,11 @@ app.layout = html.Div(
                         children=
                         [
                             html.P(dbc.Progress(value=progress_bar(accuracyPoints, pointLimit), color=accuracyColour,
-                                                label=accuracyPoints, style={"height": "20px", "width": "300px"})),
+                                                style={"height": "20px", "width": "300px"})),
                             html.P(dbc.Progress(value=progress_bar(tiltPoints, pointLimit), color=tiltColour,
-                                                label=tiltPoints, style={"height": "20px", "width": "300px"})),
+                                                style={"height": "20px", "width": "300px"})),
                             html.P(dbc.Progress(value=progress_bar(pressurePoints, pointLimit), color=pressureColour,
-                                                label=pressurePoints, style={"height": "20px", "width": "300px"}))
+                                                style={"height": "20px", "width": "300px"}))
                         ],
                         style={"display": "inline-block"}
                     ),
