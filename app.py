@@ -147,105 +147,112 @@ for attempt in data:
 app.layout = html.Div(
 
     children=[
+        dbc.Row(
+            [
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Exercise results"),
+                            html.Div(
+                                children=
+                                [
+                                    html.P("Accuracy:"),
+                                    html.P("Tilt:"),
+                                    html.P("Pressure:")
+                                ],
+                                style={"display": "inline-block"}
+                            ),
+                            html.Div(
+                                children=
+                                [
+                                    html.P(accuracyPoints),
+                                    html.P(tiltPoints),
+                                    html.P(pressurePoints)
+                                ],
+                                style={"display": "inline-block"}
+                            ),
+                            html.Div(
+                                children=
+                                [
+                                    html.P(dbc.Progress(value=progress_bar(accuracyPoints, pointLimit), color=accuracyColour,
+                                                        label=accuracyPoints, style={"height": "20px", "width": "350px"})),
+                                    html.P(dbc.Progress(value=progress_bar(tiltPoints, pointLimit), color=tiltColour,
+                                                        label=tiltPoints, style={"height": "20px", "width": "350px"})),
+                                    html.P(dbc.Progress(value=progress_bar(pressurePoints, pointLimit), color=pressureColour,
+                                                        label=pressurePoints, style={"height": "20px", "width": "350px"}))
+                                ],
+                                style={"display": "inline-block"}
+                            ),
+                            html.Div(
+                                children=
+                                [
+                                    html.P("badge" if (accuracyPoints >= pointLimit) else "grey badge"),
+                                    html.P("badge" if (tiltPoints >= pointLimit) else "grey badge"),
+                                    html.P("badge" if (pressurePoints >= pointLimit) else "grey badge")
+                                ],
+                                style={"display": "inline-block"}
+                            ),
 
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.H4("Exercise results"),
-                    html.Div(
-                        children=
-                        [
-                            html.P("Accuracy:"),
-                            html.P("Tilt:"),
-                            html.P("Pressure:")
-                        ],
-                        style={"display": "inline-block"}
+                        ]
                     ),
-                    html.Div(
-                        children=
-                        [
-                            html.P(accuracyPoints),
-                            html.P(tiltPoints),
-                            html.P(pressurePoints)
-                        ],
-                        style={"display": "inline-block"}
-                    ),
-                    html.Div(
-                        children=
-                        [
-                            html.P(dbc.Progress(value=progress_bar(accuracyPoints, pointLimit), color=accuracyColour,
-                                                label=accuracyPoints, style={"height": "20px", "width": "350px"})),
-                            html.P(dbc.Progress(value=progress_bar(tiltPoints, pointLimit), color=tiltColour,
-                                                label=tiltPoints, style={"height": "20px", "width": "350px"})),
-                            html.P(dbc.Progress(value=progress_bar(pressurePoints, pointLimit), color=pressureColour,
-                                                label=pressurePoints, style={"height": "20px", "width": "350px"}))
-                        ],
-                        style={"display": "inline-block"}
-                    ),
-                    html.Div(
-                        children=
-                        [
-                            html.P("badge" if (accuracyPoints >= pointLimit) else "grey badge"),
-                            html.P("badge" if (tiltPoints >= pointLimit) else "grey badge"),
-                            html.P("badge" if (pressurePoints >= pointLimit) else "grey badge")
-                        ],
-                        style={"display": "inline-block"}
-                    ),
-
-                ]
-            ),
-            style={"width": "50%", "display": "inline-block"},
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                [
-                    html.H4("Exercises"),
-                    html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
-                    html.P(
-                        (
-                            dbc.Progress(value=progress_bar(exercisesCompleted,
-                                                            next_goal(exercisesCompleted, allGoals)),
-                                         color="purple", label=exercisesCompleted,
-                                         style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                            html.P("grey badge", style={"display": "inline-block"})
-                        )
-                    )
-                ]
-            ),
-            style={"width": "50%", "display": "inline-block"},
-        ),
-        dbc.Card(
-            dbc.CardBody(
-                dcc.Graph(
-                    figure={
-                        "data": [
-                            {
-                                "x": [x for x in range(1, exercisesCompleted+1)],
-                                "y": accuracyPointList,
-                                "type": "lines",
-                                "name": "accuracy",
-                                "line": dict(color=accuracyColour),
-                            },
-{
-                                "x": [x for x in range(1, exercisesCompleted+1)],
-                                "y": tiltPointList,
-                                "type": "lines",
-                                "name": "tilt",
-                                "line": dict(color=tiltColour),
-                            },
-{
-                                "x": [x for x in range(1, exercisesCompleted+1)],
-                                "y": pressurePointList,
-                                "type": "lines",
-                                "name": "pressure",
-                                "line": dict(color=pressureColour),
-                            },
-                        ],
-                        "layout": {"title": "Average Price of Avocados"},
-                    },
+                    style={"width": "50%", "display": "inline-block"},
                 ),
-            ),
-            style={"width": "50%", "display": "inline-block"},
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Exercises"),
+                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
+                            html.P(
+                                (
+                                    dbc.Progress(value=progress_bar(exercisesCompleted,
+                                                                    next_goal(exercisesCompleted, allGoals)),
+                                                 color="purple", label=exercisesCompleted,
+                                                 style={"height": "20px", "width": "80%", "display": "inline-block"}),
+                                    html.P("grey badge", style={"display": "inline-block"})
+                                )
+                            )
+                        ]
+                    ),
+                    style={"width": "50%", "display": "inline-block"},
+                ),
+            ]
+        ),
+        dbc.Row(
+            [
+                dbc.Card(
+                    dbc.CardBody(
+                        dcc.Graph(
+                            figure={
+                                "data": [
+                                    {
+                                        "x": [x for x in range(1, exercisesCompleted+1)],
+                                        "y": accuracyPointList,
+                                        "type": "lines",
+                                        "name": "accuracy",
+                                        "line": dict(color=accuracyColour),
+                                    },
+        {
+                                        "x": [x for x in range(1, exercisesCompleted+1)],
+                                        "y": tiltPointList,
+                                        "type": "lines",
+                                        "name": "tilt",
+                                        "line": dict(color=tiltColour),
+                                    },
+        {
+                                        "x": [x for x in range(1, exercisesCompleted+1)],
+                                        "y": pressurePointList,
+                                        "type": "lines",
+                                        "name": "pressure",
+                                        "line": dict(color=pressureColour),
+                                    },
+                                ],
+                                "layout": {"title": "Average Price of Avocados"},
+                            },
+                        ),
+                    ),
+                    style={"width": "50%", "display": "inline-block"},
+                )
+            ]
         )
         ]
 )
