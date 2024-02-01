@@ -243,7 +243,7 @@ app.layout = html.Div(
                 )
             ]
         )
-        ]
+    ]
 )
 
 if __name__ == "__main__":
