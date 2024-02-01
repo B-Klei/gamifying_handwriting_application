@@ -162,13 +162,13 @@ app.layout = html.Div(
                                 [
                                     html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),
                                                         color=accuracy.colour,
-                                                        style={"height": "20px", "width": "350px"})),
+                                                        style={"height": "20px", "width": "300px"})),
                                     html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),
                                                         color=tilt.colour,
-                                                        style={"height": "20px", "width": "350px"})),
+                                                        style={"height": "20px", "width": "300px"})),
                                     html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),
                                                         color=pressure.colour,
-                                                        style={"height": "20px", "width": "350px"}))
+                                                        style={"height": "20px", "width": "300px"}))
                                 ],
                                 style={"display": "inline-block"}
                             ),
@@ -235,7 +235,7 @@ app.layout = html.Div(
                                         "line": dict(color=pressure.colour),
                                     },
                                 ],
-                                "layout": {"title": "Average Price of Avocados"},
+                                "layout": {"title": ""},
                             },
                         ),
                     ),
