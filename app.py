@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import csv
 from gamification import *
 from attribute import *
+from dash.dependencies import Input, Output
 
 # Open file and convert to json
 with open("dummy.csv", mode='r') as file:
@@ -210,34 +211,17 @@ app.layout = html.Div(
             [
                 dbc.Card(
                     dbc.CardBody(
-                        dcc.Graph(
-                            figure={
-                                "data": [
-                                    {
-                                        "x": [x for x in range(1, exercisesCompleted+1)],
-                                        "y": accuracy.point_list,
-                                        "type": "lines",
-                                        "name": "accuracy",
-                                        "line": dict(color=accuracy.colour),
-                                    },
-                                    {
-                                        "x": [x for x in range(1, exercisesCompleted+1)],
-                                        "y": tilt.point_list,
-                                        "type": "lines",
-                                        "name": "tilt",
-                                        "line": dict(color=tilt.colour),
-                                    },
-                                    {
-                                        "x": [x for x in range(1, exercisesCompleted+1)],
-                                        "y": pressure.point_list,
-                                        "type": "lines",
-                                        "name": "pressure",
-                                        "line": dict(color=pressure.colour),
-                                    },
+                        [
+                            dcc.RadioItems(
+                                options=[
+                                    {"label": "accuracy", "value": "accuracy_graph"},
+                                    {"label": "tilt", "value": "tilt_graph"},
+                                    {"label": "pressure", "value": "pressure_graph"}
                                 ],
-                                "layout": {"title": ""},
-                            },
-                        ),
+                                value="accuracy_graph", inline=True, id="radio", labelStyle={"margin": "10px"}
+                            ),
+                            dcc.Graph(id="attribute_graph"),
+                        ]
                     ),
                     style={"width": "50%", "display": "inline-block"},
                 )
@@ -245,6 +229,51 @@ app.layout = html.Div(
         )
     ]
 )
+
+
+@app.callback(
+    Output('attribute_graph', 'figure'),
+    [Input(component_id='radio', component_property='value')]
+)
+def build_graph(value):
+    #figure.update_layout(yaxis_range=[0,100])
+    if value == "accuracy_graph":
+        return {
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": accuracy.point_list,
+                    "type": "lines",
+                    "name": "accuracy",
+                    "line": dict(color=accuracy.colour),
+                }
+            ]
+        }
+    elif value == "tilt_graph":
+        return {
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": tilt.point_list,
+                    "type": "lines",
+                    "name": "tilt",
+                    "line": dict(color=tilt.colour),
+                }
+            ]
+        }
+    elif value == "pressure_graph":
+        return {
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": pressure.point_list,
+                    "type": "lines",
+                    "name": "pressure",
+                    "line": dict(color=pressure.colour),
+                }
+            ]
+        }
+
 
 if __name__ == "__main__":
     app.run_server(debug=True)
