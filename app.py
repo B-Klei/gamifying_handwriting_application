@@ -221,7 +221,7 @@ app.layout = html.Div(
                                 value="accuracy_graph", inline=True, id="radio", labelStyle={"margin": "10px"}
                             ),
                             dcc.Graph(
-                                figure=(),
+                                #figure=(),
                                 id="attribute_graph"
                             ),
                         ]
