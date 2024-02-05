@@ -1,11 +1,11 @@
 from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
 import csv
-from gamification import *
-from attribute import *
+from gamification import *  # functions file
+from attribute import *  # attribute class
 from dash.dependencies import Input, Output
 
-# Open file and convert to json
+# Opening file, converting into a list of dictionaries
 with open("dummy.csv", mode='r') as file:
     csv_reader = csv.DictReader(file)
     data = []
@@ -18,47 +18,47 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # Variables
 # misc
-pointLimit = 80  #
-allGoals = [1, 5, 10, 25, 50, 100]
+pointLimit = 80  # number of points awarded for achieving std_limit
+allGoals = [1, 5, 10, 25, 50, 100]  # list of all goals
 
 # exercises
-exercisesCompleted = 0
-totalExercisePoints = 0
-totalPoints = 0
+exercisesCompleted = 0  # number of completed exercises
+totalExercisePoints = 0  # total points earned per exercise
+totalPoints = 0  # total points earned
 
 # objects
-accuracy = Attribute(1.5, "#ff0055")
-tilt = Attribute(1.5, "#070091")
-pressure = Attribute(1.5, "#02c42f")
+accuracy = Attribute(1.5, "#ff0055")  # accuracy object
+tilt = Attribute(1.5, "#070091")  # tilt object
+pressure = Attribute(1.5, "#02c42f")  # pressure object
 
 # Program
 # Points, badges calculation
-for attempt in data:
-    exercisesCompleted += 1
-    totalExercisePoints = 0
+for attempt in data:  # going through data
+    exercisesCompleted += 1  # completed exercises counter
+    totalExercisePoints = 0  # number of total points earned per exercise set to 0
 
     # Accuracy
-    stdAccuracy = attempt['accuracy_std']
-    accuracy.points = assign_points(float(stdAccuracy), accuracy.std_limit, 100-pointLimit)
-    accuracy.point_list.append(accuracy.points)
-    accuracy.badges += assign_badges(accuracy.points, 100-pointLimit)
-    totalExercisePoints += accuracy.points
+    stdAccuracy = attempt['accuracy_std']  # getting the standard deviation value
+    accuracy.points = assign_points(float(stdAccuracy), accuracy.std_limit, pointLimit)  # assigning points
+    accuracy.point_list.append(accuracy.points)  # append points to list of points
+    accuracy.badges += assign_badges(accuracy.points, pointLimit)  # badges counter
+    totalExercisePoints += accuracy.points  # total exercise points counter
 
     # Tilt
-    stdTilt = attempt['tilt_std']
-    tilt.points = assign_points(float(stdTilt), tilt.std_limit, 100-pointLimit)
-    tilt.point_list.append(tilt.points)
-    tilt.badges += assign_badges(tilt.points, 100-pointLimit)
-    totalExercisePoints += tilt.points
+    stdTilt = attempt['tilt_std']  # getting the standard deviation value
+    tilt.points = assign_points(float(stdTilt), tilt.std_limit, pointLimit)  # assigning points
+    tilt.point_list.append(tilt.points)  # append points to list of points
+    tilt.badges += assign_badges(tilt.points, pointLimit)  # badges counter
+    totalExercisePoints += tilt.points  # total exercise points counter
 
     # Pressure
-    stdPressure = attempt['pressure_std']
-    pressure.points = assign_points(float(stdPressure), pressure.std_limit, 100-pointLimit)
-    pressure.point_list.append(pressure.points)
-    pressure.badges += assign_badges(pressure.points, 100-pointLimit)
-    totalExercisePoints += pressure.points
+    stdPressure = attempt['pressure_std']  # getting the standard deviation value
+    pressure.points = assign_points(float(stdPressure), pressure.std_limit, pointLimit)  # assigning points
+    pressure.point_list.append(pressure.points)  # append points to list of points
+    pressure.badges += assign_badges(pressure.points, pointLimit)  # badges counter
+    totalExercisePoints += pressure.points  # total exercise points counter
 
-    totalPoints += totalExercisePoints
+    totalPoints += totalExercisePoints  # total points counter
 
 # Layout
 """app.layout = html.Div(
@@ -280,5 +280,13 @@ def build_graph(value):
         }
 
 
+# Layout description
+# first row:
+#   Exercise result: heading; points, progress bar, badge for each attribute
+#   Completed exercises: heading; next goal; progress bar and badge
+# second row:
+#   Attribute graph(s): radio items; graph
+
+# Display in browser
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=True)  # "debug=True": being able to edit while program is running
