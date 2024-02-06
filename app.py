@@ -133,35 +133,35 @@ for attempt in data:  # going through data
 app.layout = html.Div(
 
     children=[
-        dbc.Row(
+        dbc.Row(  # first row
             [
-                dbc.Card(
+                dbc.Card(  # Exercise performance
                     dbc.CardBody(
                         [
-                            html.H4("Exercise results"),
-                            html.Div(
+                            html.H4("Exercise results"),  # heading
+                            html.Div(  # attribute names
                                 children=
                                 [
                                     html.P("Accuracy:"),
                                     html.P("Tilt:"),
                                     html.P("Pressure:")
                                 ],
-                                style={"display": "inline-block"}
+                                style={"display": "inline-block"}  # display in the same line
                             ),
-                            html.Div(
+                            html.Div(  # attribute points
                                 children=
                                 [
                                     html.P(accuracy.points),
                                     html.P(tilt.points),
                                     html.P(pressure.points)
                                 ],
-                                style={"display": "inline-block"}
+                                style={"display": "inline-block"}  # display in the same line
                             ),
-                            html.Div(
+                            html.Div(  # progress bars
                                 children=
                                 [
-                                    html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),
-                                                        color=accuracy.colour,
+                                    html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),  # portion
+                                                        color=accuracy.colour,  # attribute colour
                                                         style={"height": "20px", "width": "300px"})),
                                     html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),
                                                         color=tilt.colour,
@@ -170,88 +170,82 @@ app.layout = html.Div(
                                                         color=pressure.colour,
                                                         style={"height": "20px", "width": "300px"}))
                                 ],
-                                style={"display": "inline-block"}
+                                style={"display": "inline-block"}  # display in the same line
                             ),
-                            html.Div(
+                            html.Div(  # badges, displayed in grey if not achieved
                                 children=
                                 [
                                     html.P("badge" if (accuracy.points >= pointLimit) else "grey badge"),
                                     html.P("badge" if (tilt.points >= pointLimit) else "grey badge"),
                                     html.P("badge" if (pressure.points >= pointLimit) else "grey badge")
                                 ],
-                                style={"display": "inline-block"}
+                                style={"display": "inline-block"}  # display in the same line
                             ),
 
                         ]
                     ),
-                    style={"width": "50%", "display": "inline-block"},
+                    style={"width": "50%", "display": "inline-block"},  # width, display in the same line
                 ),
-                dbc.Card(
+                dbc.Card(  # Completed exercises
                     dbc.CardBody(
                         [
-                            html.H4("Exercises"),
+                            html.H4("Exercises"),  # heading
                             html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
+                            # <- next goal
                             html.P(
                                 (
                                     dbc.Progress(value=progress_bar(exercisesCompleted,
-                                                                    next_goal(exercisesCompleted, allGoals)),
-                                                 color="purple", label=exercisesCompleted,
+                                                                    next_goal(exercisesCompleted, allGoals)),  # portion
+                                                 color="purple", label=exercisesCompleted,  # attribute colour, label
                                                  style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                                    html.P("grey badge", style={"display": "inline-block"})
+                                    html.P("grey badge", style={"display": "inline-block"})  # grey badge
                                 )
                             )
                         ]
                     ),
-                    style={"width": "50%", "display": "inline-block"},
+                    style={"width": "50%", "display": "inline-block"},  # display in the same line
                 ),
             ]
         ),
-        dbc.Row(
+        dbc.Row(  # second row
             [
-                dbc.Card(
+                dbc.Card(  # Attribute graph
                     dbc.CardBody(
                         dcc.Graph(
                             figure={
                                 "data": [
-                                    {
-                                        "x": [x for x in range(1, exercisesCompleted+1)],
-                                        "y": accuracy.point_list,
-                                        "type": "lines",
-                                        "name": "accuracy",
-                                        "line": dict(color=accuracy.colour),
+                                    {  # accuracy
+                                        "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis
+                                        "y": accuracy.point_list,  # y-axis
+                                        "type": "lines",  # graph type
+                                        "name": "accuracy",  # name
+                                        "line": dict(color=accuracy.colour),  # line colour
                                     },
-                                    {
-                                        "x": [x for x in range(1, exercisesCompleted+1)],
-                                        "y": tilt.point_list,
-                                        "type": "lines",
-                                        "name": "tilt",
-                                        "line": dict(color=tilt.colour),
+                                    {  # tilt
+                                        "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis
+                                        "y": tilt.point_list,  # y-axis
+                                        "type": "lines",  # graph type
+                                        "name": "tilt",  # name
+                                        "line": dict(color=tilt.colour),  # line colour
                                     },
-                                    {
-                                        "x": [x for x in range(1, exercisesCompleted+1)],
-                                        "y": pressure.point_list,
-                                        "type": "lines",
-                                        "name": "pressure",
-                                        "line": dict(color=pressure.colour),
+                                    {  # pressure
+                                        "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis
+                                        "y": pressure.point_list,  # name
+                                        "type": "lines",  # graph type
+                                        "name": "pressure",  # name
+                                        "line": dict(color=pressure.colour),  # line colour
                                     },
                                 ],
-                                "layout": {"title": ""},
+                                "layout": {"title": ""},  # title
                             },
                         ),
                     ),
-                    style={"width": "50%", "display": "inline-block"},
+                    style={"width": "50%", "display": "inline-block"},  # display in the same line
                 )
             ]
         )
     ]
 )
-
-# Layout description
-# first row:
-#   Exercise result: heading; points, progress bar, badge for each attribute
-#   Completed exercises: heading; next goal; progress bar and badge
-# second row:
-#   Attribute graph(s): radio items; graph
 
 # Display in browser
 if __name__ == "__main__":
