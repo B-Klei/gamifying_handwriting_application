@@ -138,7 +138,7 @@ app.layout = html.Div(
                 dbc.Card(  # Exercise performance
                     dbc.CardBody(
                         [
-                            html.H4("Exercise results"),  # heading
+                            html.H4("Exercise performance"),  # heading
                             html.Div(  # attribute names
                                 children=
                                 [
