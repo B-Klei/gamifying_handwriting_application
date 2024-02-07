@@ -242,17 +242,19 @@ def build_graph(value):
     #figure.update_layout(yaxis_range=[0,100])
     if value == "accuracy_graph":
         return {
-                "data": [
-                    {
-                        "x": [x for x in range(1, exercisesCompleted+1)],
-                        "y": accuracy.point_list,
-                        "type": "lines",
-                        "name": "accuracy",
-                        "line": dict(color=accuracy.colour),
-                    }
-                ],
-                #layout={'yaxis': {'range': [0, 100]}}
-
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": accuracy.point_list,
+                    "type": "lines",
+                    "name": "accuracy",
+                    "line": dict(color=accuracy.colour),
+                }
+            ],
+            "layout": {
+                "title": "",  # title
+                "yaxis": {"range": [0,100]}  # y-axis fixed to full range of points
+            }
         }
     elif value == "tilt_graph":
         return {
@@ -264,7 +266,11 @@ def build_graph(value):
                     "name": "tilt",
                     "line": dict(color=tilt.colour),
                 }
-            ]
+            ],
+            "layout": {
+                "title": "",  # title
+                "yaxis": {"range": [0,100]}  # y-axis fixed to full range of points
+            }
         }
     elif value == "pressure_graph":
         return {
@@ -276,9 +282,12 @@ def build_graph(value):
                     "name": "pressure",
                     "line": dict(color=pressure.colour),
                 }
-            ]
+            ],
+            "layout": {
+                "title": "",  # title
+                "yaxis": {"range": [0,100]}  # y-axis fixed to full range of points
+            }
         }
-
 
 # Layout description
 # first row:
