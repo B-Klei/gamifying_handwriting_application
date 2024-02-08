@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import csv
 from gamification import *  # functions file
 from attribute import *  # attribute class
+from dash.dependencies import Input, Output  # necessary for callback
 
 # Opening file, converting into a list of dictionaries
 with open("dummy.csv", mode='r') as file:
@@ -211,41 +212,80 @@ app.layout = html.Div(
             [
                 dbc.Card(  # Attribute graph
                     dbc.CardBody(
-                        dcc.Graph(
-                            figure={
-                                "data": [
-                                    {  # accuracy
-                                        "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis
-                                        "y": accuracy.point_list,  # y-axis
-                                        "type": "lines",  # graph type
-                                        "name": "accuracy",  # name
-                                        "line": dict(color=accuracy.colour),  # line colour
-                                    },
-                                    {  # tilt
-                                        "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis
-                                        "y": tilt.point_list,  # y-axis
-                                        "type": "lines",  # graph type
-                                        "name": "tilt",  # name
-                                        "line": dict(color=tilt.colour),  # line colour
-                                    },
-                                    {  # pressure
-                                        "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis
-                                        "y": pressure.point_list,  # name
-                                        "type": "lines",  # graph type
-                                        "name": "pressure",  # name
-                                        "line": dict(color=pressure.colour),  # line colour
-                                    },
+                        [
+                            dcc.RadioItems(
+                                options=[
+                                    {"label": "accuracy", "value": "accuracy_graph"},
+                                    {"label": "tilt", "value": "tilt_graph"},
+                                    {"label": "pressure", "value": "pressure_graph"}
                                 ],
-                                "layout": {"title": ""},  # title
-                            },
-                        ),
+                                value="accuracy_graph", inline=True, id="radio", labelStyle={"margin": "10px"}
+                            ),
+                            dcc.Graph(id="attribute_graph"),
+                        ]
                     ),
-                    style={"width": "50%", "display": "inline-block"},  # display in the same line
+                    style={"width": "50%", "display": "inline-block"},
                 )
             ]
         )
     ]
 )
+
+
+@app.callback(
+    Output('attribute_graph', 'figure'),
+    [Input(component_id='radio', component_property='value')]
+)
+def build_graph(value):
+    if value == "accuracy_graph":
+        return {
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": accuracy.point_list,
+                    "type": "lines",
+                    "name": "accuracy",
+                    "line": dict(color=accuracy.colour),
+                }
+            ],
+            "layout": {
+                "title": "",  # title
+                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
+            }
+        }
+    elif value == "tilt_graph":
+        return {
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": tilt.point_list,
+                    "type": "lines",
+                    "name": "tilt",
+                    "line": dict(color=tilt.colour),
+                }
+            ],
+            "layout": {
+                "title": "",  # title
+                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
+            }
+        }
+    elif value == "pressure_graph":
+        return {
+            "data": [
+                {
+                    "x": [x for x in range(1, exercisesCompleted+1)],
+                    "y": pressure.point_list,
+                    "type": "lines",
+                    "name": "pressure",
+                    "line": dict(color=pressure.colour),
+                }
+            ],
+            "layout": {
+                "title": "",  # title
+                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
+            }
+        }
+
 
 # Display in browser
 if __name__ == "__main__":
