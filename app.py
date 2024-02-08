@@ -213,7 +213,8 @@ app.layout = html.Div(
                 dbc.Card(  # Attribute graph
                     dbc.CardBody(
                         [
-                            dcc.RadioItems(
+                            html.H4("Attributes overall"),  # title
+                            dcc.RadioItems(  # radio items displayed horizontally
                                 options=[
                                     {"label": "accuracy", "value": "accuracy_graph"},
                                     {"label": "tilt", "value": "tilt_graph"},
@@ -221,7 +222,7 @@ app.layout = html.Div(
                                 ],
                                 value="accuracy_graph", inline=True, id="radio", labelStyle={"margin": "10px"}
                             ),
-                            dcc.Graph(id="attribute_graph"),
+                            dcc.Graph(id="attribute_graph"),  # graph, content from callback
                         ]
                     ),
                     style={"width": "50%", "display": "inline-block"},
@@ -232,57 +233,58 @@ app.layout = html.Div(
 )
 
 
+# Callback
 @app.callback(
     Output('attribute_graph', 'figure'),
     [Input(component_id='radio', component_property='value')]
 )
 def build_graph(value):
-    if value == "accuracy_graph":
+    if value == "accuracy_graph":  # value from radio items
         return {
             "data": [
                 {
-                    "x": [x for x in range(1, exercisesCompleted+1)],
-                    "y": accuracy.point_list,
-                    "type": "lines",
+                    "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis: attempt number
+                    "y": accuracy.point_list,  # y-axis: points earned for accuracy
+                    "type": "lines",  # graph type: line graph
                     "name": "accuracy",
-                    "line": dict(color=accuracy.colour),
+                    "line": dict(color=accuracy.colour),  # line colour
                 }
             ],
             "layout": {
-                "title": "",  # title
-                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
+                "yaxis": {"range": [0, 100], "title": "points"},  # y-axis fixed to full range of points, description
+                "xaxis": {"title": "attempt"}  # x-axis description
             }
         }
-    elif value == "tilt_graph":
+    elif value == "tilt_graph":  # value from radio items
         return {
             "data": [
                 {
-                    "x": [x for x in range(1, exercisesCompleted+1)],
-                    "y": tilt.point_list,
-                    "type": "lines",
+                    "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis: attempt number
+                    "y": tilt.point_list,  # y-axis: points earned for tilt
+                    "type": "lines",  # graph type: line graph
                     "name": "tilt",
-                    "line": dict(color=tilt.colour),
+                    "line": dict(color=tilt.colour),  # line colour
                 }
             ],
             "layout": {
-                "title": "",  # title
-                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
+                "yaxis": {"range": [0, 100], "title": "points"},  # y-axis fixed to full range of points, description
+                "xaxis": {"title": "attempt"}  # x-axis description
             }
         }
-    elif value == "pressure_graph":
+    elif value == "pressure_graph":  # value from radio items
         return {
             "data": [
                 {
-                    "x": [x for x in range(1, exercisesCompleted+1)],
-                    "y": pressure.point_list,
-                    "type": "lines",
+                    "x": [x for x in range(1, exercisesCompleted+1)],  # x-axis: attempt number
+                    "y": pressure.point_list,  # y-axis: points earned for pressure
+                    "type": "lines",  # graph type: line graph
                     "name": "pressure",
-                    "line": dict(color=pressure.colour),
+                    "line": dict(color=pressure.colour),  # line colour
                 }
             ],
             "layout": {
-                "title": "",  # title
-                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
+                "yaxis": {"range": [0, 100], "title": "points"},  # y-axis fixed to full range of points, description
+                "xaxis": {"title": "attempt"}  # x-axis description
             }
         }
 
