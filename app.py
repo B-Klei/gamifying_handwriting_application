@@ -220,10 +220,7 @@ app.layout = html.Div(
                                 ],
                                 value="accuracy_graph", inline=True, id="radio", labelStyle={"margin": "10px"}
                             ),
-                            dcc.Graph(
-                                #figure=(),
-                                id="attribute_graph"
-                            ),
+                            dcc.Graph(id="attribute_graph"),
                         ]
                     ),
                     style={"width": "50%", "display": "inline-block"},
@@ -239,7 +236,6 @@ app.layout = html.Div(
     [Input(component_id='radio', component_property='value')]
 )
 def build_graph(value):
-    #figure.update_layout(yaxis_range=[0,100])
     if value == "accuracy_graph":
         return {
             "data": [
@@ -253,7 +249,7 @@ def build_graph(value):
             ],
             "layout": {
                 "title": "",  # title
-                "yaxis": {"range": [0,100]}  # y-axis fixed to full range of points
+                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
             }
         }
     elif value == "tilt_graph":
@@ -269,7 +265,7 @@ def build_graph(value):
             ],
             "layout": {
                 "title": "",  # title
-                "yaxis": {"range": [0,100]}  # y-axis fixed to full range of points
+                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
             }
         }
     elif value == "pressure_graph":
@@ -285,7 +281,7 @@ def build_graph(value):
             ],
             "layout": {
                 "title": "",  # title
-                "yaxis": {"range": [0,100]}  # y-axis fixed to full range of points
+                "yaxis": {"range": [0, 100]}  # y-axis fixed to full range of points
             }
         }
 
@@ -295,6 +291,7 @@ def build_graph(value):
 #   Completed exercises: heading; next goal; progress bar and badge
 # second row:
 #   Attribute graph(s): radio items; graph
+
 
 # Display in browser
 if __name__ == "__main__":
