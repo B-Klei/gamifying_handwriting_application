@@ -134,6 +134,19 @@ for attempt in data:  # going through data
 app.layout = html.Div(
 
     children=[
+        dbc.Row(  # header row
+            dbc.Card(  # Student info
+                dbc.CardBody(
+                    [
+                        # Name
+                        # Total points
+                        # Number of badges
+                    ]
+                ),
+                style={"width": "100%"},  # display full width
+            ),
+
+        ),
         dbc.Row(  # first row
             [
                 dbc.Card(  # Exercise performance
