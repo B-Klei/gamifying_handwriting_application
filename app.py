@@ -61,76 +61,6 @@ for attempt in data:  # going through data
     totalPoints += totalExercisePoints  # total points counter
 
 # Layout
-"""app.layout = html.Div(
-
-    children=[
-
-        html.H1(children="Avocado Analytics"),
-
-        html.P(
-
-            children=(
-
-                "Analyze the behavior of avocado prices and the number"
-
-                " of avocados sold in the US between 2015 and 2018"
-
-            ),
-
-        ),
-
-        dcc.Graph(
-
-            figure={
-
-                "data": [
-
-                    {
-
-                        "x": data["Date"],
-
-                        "y": data["AveragePrice"],
-
-                        "type": "lines",
-
-                    },
-
-                ],
-
-                "layout": {"title": "Average Price of Avocados"},
-
-            },
-
-        ),
-
-        dcc.Graph(
-
-            figure={
-
-                "data": [
-
-                    {
-
-                        "x": data["Date"],
-
-                        "y": data["Total Volume"],
-
-                        "type": "lines",
-
-                    },
-
-                ],
-
-                "layout": {"title": "Avocados Sold"},
-
-            },
-
-        ),
-
-    ]
-
-)"""
-
 app.layout = html.Div(
 
     children=[
@@ -138,12 +68,13 @@ app.layout = html.Div(
             dbc.Card(  # Student info
                 dbc.CardBody(
                     [
-                        # Name
-                        # Total points
-                        # Number of badges
+                        html.H1(data[0]["student_name"], style={"display": "inline-block"}),  # Name
+                        html.H5(["ID: ", data[0]["student_id"]], style={"display": "inline-block"}),  # ID
+                        html.H5(["Total points: ", totalPoints], style={"display": "inline-block"}),  # Total points
+                        html.H2(["Badges: ", "xx"], style={"display": "inline-block", "float": "right"})  # Number of badges
                     ]
                 ),
-                style={"width": "100%"},  # display full width
+                style={"width": "100%", "position": "sticky"},  # display full width, stick to top
             ),
 
         ),
