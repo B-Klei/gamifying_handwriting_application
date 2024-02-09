@@ -64,6 +64,20 @@ for attempt in data:  # going through data
 app.layout = html.Div(
 
     children=[
+        dbc.Row(  # header row
+            dbc.Card(  # Student info
+                dbc.CardBody(
+                    [
+                        html.H1(data[0]["student_name"], style={"display": "inline-block"}),  # Name
+                        html.H5(["ID: ", data[0]["student_id"]], style={"display": "inline-block"}),  # ID
+                        html.H5(["Total points: ", totalPoints], style={"display": "inline-block"}),  # Total points
+                        html.H2(["Badges: ", "xx"], style={"display": "inline-block", "float": "right"})  # Number of badges
+                    ]
+                ),
+                style={"width": "100%", "position": "sticky"},  # display full width, stick to top
+            ),
+
+        ),
         dbc.Row(  # first row
             [
                 dbc.Card(  # Exercise performance
