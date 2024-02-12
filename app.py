@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import csv
 from gamification import *  # functions file
 from attribute import *  # attribute class
+from badge_dictionary import *  # dictionary of badges
 from dash.dependencies import Input, Output  # necessary for callback
 
 # Opening file, converting into a list of dictionaries
@@ -20,6 +21,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # misc
 pointLimit = 80  # number of points awarded for achieving std_limit
 allGoals = [1, 5, 10, 25, 50, 100]  # list of all goals
+badgesEarned = []
 
 # exercises
 exercisesCompleted = 0  # number of completed exercises
@@ -61,44 +63,6 @@ for attempt in data:  # going through data
     totalPoints += totalExercisePoints  # total points counter
 
 # Badges
-badgesEarned = []
-# dictionary
-badgesDictionary = {
-    "completedExercisesBadges": {
-        "1 exercise": 1,
-        "5 exercises": 5,
-        "10 exercises": 10,
-        "25 exercises": 25,
-        "50 exercises": 50,
-        "100 exercises": 100
-    },
-    "accuracyBadges": {
-        "1x accuracy": 1,
-        "5x accuracy": 5,
-        "10x accuracy": 10,
-        "25x accuracy": 25,
-        "50x accuracy": 50,
-        "100x accuracy": 100
-    },
-    "tiltBadges": {
-        "1x tilt": 1,
-        "5x tilt": 5,
-        "10x tilt": 10,
-        "25x tilt": 25,
-        "50x tilt": 50,
-        "100x tilt": 100,
-    },
-    "pressureBadges": {
-        "1x pressure": 1,
-        "5x pressure": 5,
-        "10x pressure": 10,
-        "25x pressure": 25,
-        "50x pressure": 50,
-        "100x pressure": 100
-    }
-}
-
-# program
 for badge_category in badgesDictionary:
     if badge_category == "completedExercisesBadges":
         for badge in badgesDictionary[badge_category]:
@@ -231,6 +195,7 @@ app.layout = html.Div(
                 dbc.Card(  # Badge display
                     dbc.CardBody(
                         [
+                            html.H4("Badges"),
                             html.P([x for x in badgesEarned])
                         ]
                     ),
