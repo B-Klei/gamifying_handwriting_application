@@ -204,10 +204,19 @@ app.layout = html.Div(
                             html.Ul(
                                 [
                                     html.Li(
-                                        html.Div(
-                                            x, className="earned" if x in badgesEarned else "unearned"
+                                        html.Ul(
+                                            [
+                                                html.Li(
+                                                    html.Div(
+                                                        badge,
+                                                        className="earned"
+                                                        if badge in badgesEarned
+                                                        else "unearned"
+                                                    ), style={"display": "inline-block", "padding": "5px"}
+                                                ) for badge in badgesDictionary[category]
+                                            ]
                                         ), style={"display": "inline-block", "padding": "5px"}
-                                    ) for x in badgesAll
+                                    ) for category in badgesDictionary
                                 ], style={'listStyle': 'none'}
                             )
                         ]
