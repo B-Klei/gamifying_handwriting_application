@@ -21,8 +21,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # misc
 pointLimit = 80  # number of points awarded for achieving std_limit
 allGoals = [1, 5, 10, 25, 50, 100]  # list of all goals
-badgesEarned = []
-badgesAll = []
+badgesEarned = []  # list of earned badges
 
 # exercises
 exercisesCompleted = 0  # number of completed exercises
@@ -64,27 +63,26 @@ for attempt in data:  # going through data
     totalPoints += totalExercisePoints  # total points counter
 
 # Badges
-for badge_category in badgesDictionary:
-    if badge_category == "completedExercisesBadges":
-        for badge in badgesDictionary[badge_category]:
-            if badgesDictionary[badge_category][badge] <= exercisesCompleted:
-                badgesEarned.append(badge)
-            badgesAll.append(badge)
-    elif badge_category == "accuracyBadges":
-        for badge in badgesDictionary[badge_category]:
-            if badgesDictionary[badge_category][badge] <= accuracy.badges:
-                badgesEarned.append(badge)
-            badgesAll.append(badge)
-    elif badge_category == "tiltBadges":
-        for badge in badgesDictionary[badge_category]:
-            if badgesDictionary[badge_category][badge] <= tilt.badges:
-                badgesEarned.append(badge)
-            badgesAll.append(badge)
-    elif badge_category == "pressureBadges":
-        for badge in badgesDictionary[badge_category]:
-            if badgesDictionary[badge_category][badge] <= pressure.badges:
-                badgesEarned.append(badge)
-            badgesAll.append(badge)
+for badge_category in badgesDictionary:  # going through categories
+    if badge_category == "completedExercisesBadges":  # category Completed exercises
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= exercisesCompleted:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
+    elif badge_category == "accuracyBadges":  # category Accuracy
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= accuracy.badges:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
+    elif badge_category == "tiltBadges":  # category Tilt
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= tilt.badges:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
+    elif badge_category == "pressureBadges":  # category Pressure
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= pressure.badges:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
 
 # Layout
 app.layout = html.Div(
@@ -97,7 +95,7 @@ app.layout = html.Div(
                         html.H1(data[0]["student_name"], style={"display": "inline-block"}),  # Name
                         html.H5(["ID: ", data[0]["student_id"]], style={"display": "inline-block"}),  # ID
                         html.H5(["Total points: ", totalPoints], style={"display": "inline-block"}),  # Total points
-                        html.H2(["Badges: ", "xx"], style={"display": "inline-block", "float": "right"})  # Number of badges
+                        html.H2(["Badges: ", len(badgesEarned)], style={"display": "inline-block", "float": "right"})  # Number of badges
                     ]
                 ),
                 style={"width": "100%", "position": "sticky"},  # display full width, stick to top
@@ -195,7 +193,7 @@ app.layout = html.Div(
                             dcc.Graph(id="attribute_graph"),  # graph, content from callback
                         ]
                     ),
-                    style={"width": "50%", "display": "inline-block"},
+                    style={"width": "45%", "display": "inline-block"},
                 ),
                 dbc.Card(  # Badge display
                     dbc.CardBody(
@@ -217,11 +215,11 @@ app.layout = html.Div(
                                             ]
                                         ), style={"display": "inline-block", "padding": "5px"}
                                     ) for category in badgesDictionary
-                                ], style={'listStyle': 'none'}
+                                ], style={"listStyle": "none", "padding": "0"}
                             )
                         ]
                     ),
-                    style={"width": "50%", "display": "inline-block"},
+                    style={"width": "55%", "display": "inline-block"},
                 )
             ]
         )
