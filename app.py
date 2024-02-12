@@ -22,6 +22,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 pointLimit = 80  # number of points awarded for achieving std_limit
 allGoals = [1, 5, 10, 25, 50, 100]  # list of all goals
 badgesEarned = []
+badgesAll = []
 
 # exercises
 exercisesCompleted = 0  # number of completed exercises
@@ -68,18 +69,22 @@ for badge_category in badgesDictionary:
         for badge in badgesDictionary[badge_category]:
             if badgesDictionary[badge_category][badge] <= exercisesCompleted:
                 badgesEarned.append(badge)
+            badgesAll.append(badge)
     elif badge_category == "accuracyBadges":
         for badge in badgesDictionary[badge_category]:
             if badgesDictionary[badge_category][badge] <= accuracy.badges:
                 badgesEarned.append(badge)
+            badgesAll.append(badge)
     elif badge_category == "tiltBadges":
         for badge in badgesDictionary[badge_category]:
             if badgesDictionary[badge_category][badge] <= tilt.badges:
                 badgesEarned.append(badge)
+            badgesAll.append(badge)
     elif badge_category == "pressureBadges":
         for badge in badgesDictionary[badge_category]:
             if badgesDictionary[badge_category][badge] <= pressure.badges:
                 badgesEarned.append(badge)
+            badgesAll.append(badge)
 
 # Layout
 app.layout = html.Div(
@@ -196,7 +201,15 @@ app.layout = html.Div(
                     dbc.CardBody(
                         [
                             html.H4("Badges"),
-                            html.P([x for x in badgesEarned])
+                            html.Ul(
+                                [
+                                    html.Li(
+                                        html.Div(
+                                            x, className="earned" if x in badgesEarned else "unearned"
+                                        ), style={"display": "inline-block", "padding": "5px"}
+                                    ) for x in badgesAll
+                                ], style={'listStyle': 'none'}
+                            )
                         ]
                     ),
                     style={"width": "50%", "display": "inline-block"},

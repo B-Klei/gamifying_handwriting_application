@@ -17,3 +17,11 @@ h2 {
 h5 {
     margin: 0px 20px;
 }
+
+.earned {
+    color: SlateBlue;
+}
+
+.unearned {
+    color: Gray;
+}
