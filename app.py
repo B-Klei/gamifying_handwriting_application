@@ -199,28 +199,30 @@ app.layout = html.Div(
                 dbc.Card(  # Badge display
                     dbc.CardBody(
                         [
-                            html.H4("Badges"),
-                            html.Ul(
+                            html.H4("Badges"),  # Heading
+                            html.Ul(  # category list
                                 [
-                                    html.Li(
-                                        html.Ul(
+                                    html.Li(  # item in category list
+                                        html.Ul(  # badge list
                                             [
-                                                html.Li(
-                                                    html.Div(
-                                                        badge,
-                                                        className="earned"
+                                                html.Li(  # item in badge list
+                                                    html.Div(  # badge div
+                                                        badge,  # badge
+                                                        className="earned"  # class if earned
                                                         if badge in badgesEarned
-                                                        else "unearned"
-                                                    ), style={"display": "inline-block", "padding": "5px"}
-                                                ) for badge in badgesDictionary[category]
-                                            ]
-                                        ), style={"display": "inline-block", "padding": "5px"}
-                                    ) for category in badgesDictionary
-                                ], style={"listStyle": "none", "padding": "0"}
+                                                        else "unearned"  # class if not earned
+                                                    ), style={"padding": "10px"}
+                                                ) for badge in badgesDictionary[category]  # for each badge in category
+                                            ], style={"display": "inline-block",  # show in line
+                                                      "padding": "10px",  # padding
+                                                      "listStyle": "none"}  # no bullets
+                                        ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
+                                    ) for category in badgesDictionary  # for each category of badges
+                                ], style={"listStyle": "none", "padding": "0"}  # category list: no bullets, no padding
                             )
                         ]
                     ),
-                    style={"width": "55%", "display": "inline-block"},
+                    style={"width": "55%", "display": "inline-block"},  # card style
                 )
             ]
         )
