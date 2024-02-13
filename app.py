@@ -93,10 +93,14 @@ app.layout = html.Div(
             dbc.Card(  # Student info
                 dbc.CardBody(
                     [
-                        html.H1(data[0]["student_name"], style={"display": "inline-block"}),  # Name
-                        html.H5(["ID: ", data[0]["student_id"]], style={"display": "inline-block"}),  # ID
-                        html.H5(["Total points: ", totalPoints], style={"display": "inline-block"}),  # Total points
-                        html.H2(["Badges: ", len(badgesEarned)], style={"display": "inline-block", "float": "right"})  # Number of badges
+                        html.H1(data[0]["student_name"],  # Name
+                                style={"display": "inline-block"}),
+                        html.H5(["ID: ", data[0]["student_id"]],  # ID
+                                style={"display": "inline-block"}),
+                        html.H5(["Total points: ", totalPoints],  # Total points
+                                style={"display": "inline-block"}),
+                        html.H2(["Badges: ", len(badgesEarned)],  # Number of badges
+                                style={"display": "inline-block", "float": "right"})
                     ]
                 ),
                 style={"width": "100%", "position": "sticky"},  # display full width, stick to top
