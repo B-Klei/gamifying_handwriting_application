@@ -229,6 +229,22 @@ app.layout = html.Div(
                     style={"width": "55%", "display": "inline-block"},  # card style
                 )
             ]
+        ),
+        dbc.Row(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.H4("Motivation")
+                    ]
+                ), style={"width": "50%", "display": "inline-block"}
+            ),
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.H4("Leaderboard")
+                    ]
+                ), style={"width": "50%", "display": "inline-block"}
+            )
         )
     ]
 )
