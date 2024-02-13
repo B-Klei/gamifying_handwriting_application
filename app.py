@@ -22,6 +22,7 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 pointLimit = 80  # number of points awarded for achieving std_limit
 allGoals = [1, 5, 10, 25, 50, 100]  # list of all goals
 badgesEarned = []  # list of earned badges
+badgesDictionary = badges_dictionary(allGoals)  # dictionary of all the badges
 
 # exercises
 exercisesCompleted = 0  # number of completed exercises

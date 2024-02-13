@@ -1,34 +1,36 @@
-badgesDictionary = {
-    "completedExercisesBadges": {  # Badges for completed exercises
-        "1 exercise": 1,  # badge for 1 completed exercise
-        "5 exercises": 5,  # badge for 5 completed exercises
-        "10 exercises": 10,  # badge for 10 completed exercises
-        "25 exercises": 25,  # badge for 25 completed exercises
-        "50 exercises": 50,  # badge for 50 completed exercises
-        "100 exercises": 100  # badge for 100 completed exercises
-    },
-    "accuracyBadges": {  # Badges for accuracy
-        "1x accuracy": 1,  # badge for achieving accuracy points above limit 1-time
-        "5x accuracy": 5,  # badge for achieving accuracy points above limit 5-times
-        "10x accuracy": 10,  # badge for achieving accuracy points above limit 10-times
-        "25x accuracy": 25,  # badge for achieving accuracy points above limit 25-times
-        "50x accuracy": 50,  # badge for achieving accuracy points above limit 50-times
-        "100x accuracy": 100  # badge for achieving accuracy points above limit 10-times
-    },
-    "tiltBadges": {  # Badges for tilt
-        "1x tilt": 1,  # badge for achieving tilt points above limit 1-time
-        "5x tilt": 5,  # badge for achieving tilt points above limit 5-times
-        "10x tilt": 10,  # badge for achieving tilt points above limit 10-times
-        "25x tilt": 25,  # badge for achieving tilt points above limit 25-times
-        "50x tilt": 50,  # badge for achieving tilt points above limit 50-times
-        "100x tilt": 100,  # badge for achieving tilt points above limit 100-times
-    },
-    "pressureBadges": {  # Badges for pressure
-        "1x pressure": 1,  # badge for achieving pressure points above limit 1-time
-        "5x pressure": 5,  # badge for achieving pressure points above limit 5-times
-        "10x pressure": 10,  # badge for achieving pressure points above limit 10-times
-        "25x pressure": 25,  # badge for achieving pressure points above limit 25-times
-        "50x pressure": 50,  # badge for achieving pressure points above limit 50-times
-        "100x pressure": 100  # badge for achieving pressure points above limit 100-times
-    }
-}
+# Dictionary
+# Create badge dictionary for a category
+def exercise_badges_dictionary(all_goals):
+    badge_dictionary = {}
+
+    if len(all_goals) > 0:
+        for goal in all_goals:
+            if goal == 1:
+                badge_name = str(goal) + " exercise"
+            else:
+                badge_name = str(goal) + " exercises"
+            badge_dictionary[badge_name] = goal
+    return badge_dictionary
+
+
+# Create badge dictionary for an attribute
+def attribute_badges_dictionary(all_goals, attribute):
+    badge_dictionary = {}
+
+    if len(all_goals) > 0:
+        for goal in all_goals:
+            badge_name = str(goal) + "x " + attribute
+            badge_dictionary[badge_name] = goal
+    return badge_dictionary
+
+
+# Create dictionary of all badges
+def badges_dictionary(all_goals):
+    badge_dictionary = {}
+    attributes = ["accuracy", "tilt", "pressure"]
+
+    badge_dictionary["completedExercisesBadges"] = exercise_badges_dictionary(all_goals)
+    for attribute in attributes:
+        badge_dictionary[(attribute + "Badges")] = attribute_badges_dictionary(all_goals, attribute)
+
+    return badge_dictionary
