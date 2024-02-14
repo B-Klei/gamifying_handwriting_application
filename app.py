@@ -120,7 +120,7 @@ app.layout = html.Div(
                                     html.P("Tilt:"),
                                     html.P("Pressure:")
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "37px"}  # display in the same line
                             ),
                             html.Div(  # attribute points
                                 children=
@@ -129,29 +129,50 @@ app.layout = html.Div(
                                     html.P(tilt.points),
                                     html.P(pressure.points)
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "37px"}  # display in the same line
                             ),
                             html.Div(  # progress bars
                                 children=
                                 [
                                     html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),  # portion
                                                         color=accuracy.colour,  # attribute colour
-                                                        style={"height": "20px", "width": "300px"})),
+                                                        style={"height": "20px", "width": "300px"}),
+                                           style={"height": "35px"}),
                                     html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),
                                                         color=tilt.colour,
-                                                        style={"height": "20px", "width": "300px"})),
+                                                        style={"height": "20px", "width": "300px"}),
+                                           style={"height": "35px"}),
                                     html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),
                                                         color=pressure.colour,
-                                                        style={"height": "20px", "width": "300px"}))
+                                                        style={"height": "20px", "width": "300px"}),
+                                           style={"height": "35px"})
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
                             html.Div(  # badges, displayed in grey if not achieved
                                 children=
                                 [
-                                    html.P("badge" if (accuracy.points >= pointLimit) else "grey badge"),
-                                    html.P("badge" if (tilt.points >= pointLimit) else "grey badge"),
-                                    html.P("badge" if (pressure.points >= pointLimit) else "grey badge")
+                                    html.Img(
+                                        src="assets/badge_icon_ff0055.png" if (accuracy.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",
+                                        alt="accuracy badge earned" if (accuracy.points >= pointLimit)
+                                        else "accuracy badge not earned",
+                                        width="25",
+                                    ), html.Br(),
+                                    html.Img(
+                                        src="assets/badge_icon_070091.png" if (tilt.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",
+                                        alt="tilt badge earned" if (tilt.points >= pointLimit)
+                                        else "tilt badge not earned",
+                                        width="25",
+                                    ), html.Br(),
+                                    html.Img(
+                                        src="assets/badge_icon_02c42f.png" if (pressure.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",
+                                        alt="pressure badge earned" if (pressure.points >= pointLimit)
+                                        else "pressure badge not earned",
+                                        width="25",
+                                    ),
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
@@ -164,7 +185,9 @@ app.layout = html.Div(
                     dbc.CardBody(
                         [
                             html.H4("Exercises"),  # heading
-                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
+                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals),
+                                    " exercises" if exercisesCompleted > 1 else " exercise"),
+                                   style={"line-height": "37px"}),
                             # <- next goal
                             html.P(
                                 (
@@ -172,7 +195,22 @@ app.layout = html.Div(
                                                                     next_goal(exercisesCompleted, allGoals)),  # portion
                                                  color="purple", label=exercisesCompleted,  # attribute colour, label
                                                  style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                                    html.P("grey badge", style={"display": "inline-block"})  # grey badge
+                                    html.Div(
+                                        html.Div(
+                                            [
+                                                html.Img(
+                                                    src="assets/badge_icon_grey.png",
+                                                    alt="next badge: " + str(next_goal(exercisesCompleted, allGoals)),
+                                                    width="100%",
+                                                    className="badge-img"
+                                                ),
+                                                html.Div(
+                                                    html.P(str(next_goal(exercisesCompleted, allGoals))),
+                                                    className="badge-text", style={"top": "20px"}
+                                                )
+                                            ], className="badge-div", style={"width": "40px"}
+                                        ), className="badge-upper-div"
+                                    ),
                                 )
                             )
                         ]
@@ -210,16 +248,28 @@ app.layout = html.Div(
                                         html.Ul(  # badge list
                                             [
                                                 html.Li(  # item in badge list
-                                                    html.Div(  # badge div
-                                                        badge,  # badge
-                                                        className="earned"  # class if earned
-                                                        if badge in badgesEarned
-                                                        else "unearned"  # class if not earned
-                                                    ), style={"padding": "10px"}
+                                                    html.Div(
+                                                        html.Div(
+                                                            [
+                                                                html.Img(
+                                                                    src=which_badge(badge, badgesEarned),
+                                                                    alt=which_alt(badge, badgesEarned),
+                                                                    width="100%",
+                                                                    className="badge-img"
+                                                                ),
+                                                                html.Div(
+                                                                    html.P(badge),
+                                                                    className="badge-text"
+                                                                )
+                                                            ], className="badge-div"
+                                                        ), className="badge-upper-div"
+                                                    ),
                                                 ) for badge in badgesDictionary[category]  # for each badge in category
-                                            ], style={"display": "inline-block",  # show in line
-                                                      "padding": "10px",  # padding
-                                                      "listStyle": "none"}  # no bullets
+                                            ], style={
+                                                #"display": "inline-block",  # show in line
+                                                "padding": "10px",  # padding
+                                                "listStyle": "none"
+                                            }  # no bullets
                                         ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
                                     ) for category in badgesDictionary  # for each category of badges
                                 ], style={"listStyle": "none", "padding": "0"}  # category list: no bullets, no padding
