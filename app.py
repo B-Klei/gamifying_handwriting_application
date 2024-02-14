@@ -204,7 +204,7 @@ app.layout = html.Div(
                                                 className="badge-img"  # css
                                             ),
                                             html.Div(  # badge text
-                                                html.P(str(next_goal(exercisesCompleted, allGoals))),  # text: next goal
+                                                html.P(str(next_goal(exercisesCompleted, allGoals))),  # next goal
                                                 className="badge-text", style={"top": "20px"}  # css, text position
                                             )
                                         ], className="badge-div", style={"width": "40px"}  # css, badge size
