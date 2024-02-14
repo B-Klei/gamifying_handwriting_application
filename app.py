@@ -116,7 +116,7 @@ app.layout = html.Div(
                                     html.P("Tilt:"),
                                     html.P("Pressure:")
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "40px"}  # display in the same line
                             ),
                             html.Div(  # attribute points
                                 children=
@@ -125,29 +125,50 @@ app.layout = html.Div(
                                     html.P(tilt.points),
                                     html.P(pressure.points)
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "40px"}  # display in the same line
                             ),
                             html.Div(  # progress bars
                                 children=
                                 [
                                     html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),  # portion
                                                         color=accuracy.colour,  # attribute colour
-                                                        style={"height": "20px", "width": "300px"})),
+                                                        style={"height": "20px", "width": "300px"}),
+                                           style={"height": "35px"}),
                                     html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),
                                                         color=tilt.colour,
-                                                        style={"height": "20px", "width": "300px"})),
+                                                        style={"height": "20px", "width": "300px"}),
+                                           style={"height": "35px"}),
                                     html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),
                                                         color=pressure.colour,
-                                                        style={"height": "20px", "width": "300px"}))
+                                                        style={"height": "20px", "width": "300px"}),
+                                           style={"height": "35px"})
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
                             html.Div(  # badges, displayed in grey if not achieved
                                 children=
                                 [
-                                    html.P("badge" if (accuracy.points >= pointLimit) else "grey badge"),
-                                    html.P("badge" if (tilt.points >= pointLimit) else "grey badge"),
-                                    html.P("badge" if (pressure.points >= pointLimit) else "grey badge")
+                                    html.Img(
+                                        src="assets/badge_icon_ff0055.png" if (accuracy.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",
+                                        alt="accuracy badge earned" if (accuracy.points >= pointLimit)
+                                        else "accuracy badge not earned",
+                                        width="25",
+                                    ), html.Br(),
+                                    html.Img(
+                                        src="assets/badge_icon_070091.png" if (tilt.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",
+                                        alt="tilt badge earned" if (tilt.points >= pointLimit)
+                                        else "tilt badge not earned",
+                                        width="25",
+                                    ), html.Br(),
+                                    html.Img(
+                                        src="assets/badge_icon_02c42f.png" if (pressure.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",
+                                        alt="pressure badge earned" if (pressure.points >= pointLimit)
+                                        else "pressure badge not earned",
+                                        width="25",
+                                    ),
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
