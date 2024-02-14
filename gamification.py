@@ -52,6 +52,8 @@ def which_badge(display_badge, earned_badges_list):
             icon_src = "assets/badge_icon_070091.png"
         elif "pressure" in display_badge:
             icon_src = "assets/badge_icon_02c42f.png"
+        else:
+            icon_src = "assets/badge_icon_black.png"
     else:
         icon_src = "assets/badge_icon_grey.png"
 
