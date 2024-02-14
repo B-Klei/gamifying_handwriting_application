@@ -207,13 +207,15 @@ app.layout = html.Div(
                                             [
                                                 html.Li(  # item in badge list
                                                     html.Div(  # badge div
-                                                        badge,  # badge
-                                                        className="earned"  # class if earned
-                                                        if badge in badgesEarned
-                                                        else "unearned"  # class if not earned
+                                                        [
+                                                            html.Img(src=which_badge(badge, badgesEarned),
+                                                                 alt=which_alt(badge, badgesEarned),
+                                                                 width="100px"),
+                                                            badge
+                                                        ]
                                                     ), style={"padding": "10px"}
                                                 ) for badge in badgesDictionary[category]  # for each badge in category
-                                            ], style={"display": "inline-block",  # show in line
+                                            ], style={#"display": "inline-block",  # show in line
                                                       "padding": "10px",  # padding
                                                       "listStyle": "none"}  # no bullets
                                         ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
@@ -225,6 +227,16 @@ app.layout = html.Div(
                     style={"width": "55%", "display": "inline-block"},  # card style
                 )
             ]
+        ),
+        dbc.Row(
+            dbc.Card(
+                dbc.CardBody(
+                    [
+                        html.Img(src=r"assets/badge_icon_black.png",
+                                 alt="badge earned", width="50px")
+                    ]
+                )
+            )
         )
     ]
 )
