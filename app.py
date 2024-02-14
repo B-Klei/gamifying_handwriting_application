@@ -160,7 +160,8 @@ app.layout = html.Div(
                     dbc.CardBody(
                         [
                             html.H4("Exercises"),  # heading
-                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
+                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals),
+                                    " exercises" if exercisesCompleted > 1 else " exercise")),
                             # <- next goal
                             html.P(
                                 (
@@ -168,7 +169,22 @@ app.layout = html.Div(
                                                                     next_goal(exercisesCompleted, allGoals)),  # portion
                                                  color="purple", label=exercisesCompleted,  # attribute colour, label
                                                  style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                                    html.P("grey badge", style={"display": "inline-block"})  # grey badge
+                                    html.Div(
+                                        html.Div(
+                                            [
+                                                html.Img(
+                                                    src="assets/badge_icon_grey.png",
+                                                    alt="next badge: " + str(next_goal(exercisesCompleted, allGoals)),
+                                                    width="100%",
+                                                    className="badge-img"
+                                                ),
+                                                html.Div(
+                                                    html.P(str(next_goal(exercisesCompleted, allGoals))),
+                                                    className="badge-text", style={"top": "20px"}
+                                                )
+                                            ], className="badge-div", style={"width": "40px"}
+                                        ), className="badge-upper-div"
+                                    ),
                                 )
                             )
                         ]
