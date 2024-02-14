@@ -189,27 +189,29 @@ app.layout = html.Div(
                                     " exercises" if exercisesCompleted > 1 else " exercise"),  # pl/sg
                                    style={"line-height": "37px"}),
                             html.P(
-                                dbc.Progress(value=progress_bar(exercisesCompleted,
-                                                                next_goal(exercisesCompleted, allGoals)),  # portion
-                                             color="purple", label=exercisesCompleted,  # attribute colour, label
-                                             style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                                html.Div(
+                                [
+                                    dbc.Progress(value=progress_bar(exercisesCompleted,
+                                                                    next_goal(exercisesCompleted, allGoals)),  # portion
+                                                 color="purple", label=exercisesCompleted,  # attribute colour, label
+                                                 style={"height": "20px", "width": "80%", "display": "inline-block"}),
                                     html.Div(
-                                        [
-                                            html.Img(  # badge image
-                                                src="assets/badge_icon_grey.png",  # source
-                                                alt="next badge: " + str(next_goal(exercisesCompleted, allGoals)),
-                                                # alt text
-                                                width="100%",  # image width the size of div
-                                                className="badge-img"  # css
-                                            ),
-                                            html.Div(  # badge text
-                                                html.P(str(next_goal(exercisesCompleted, allGoals))),  # next goal
-                                                className="badge-text", style={"top": "20px"}  # css, text position
-                                            )
-                                        ], className="badge-div", style={"width": "40px"}  # css, badge size
-                                    ), className="badge-upper-div"  # css
-                                )
+                                        html.Div(
+                                            [
+                                                html.Img(  # badge image
+                                                    src="assets/badge_icon_grey.png",  # source
+                                                    alt="next badge: " + str(next_goal(exercisesCompleted, allGoals)),
+                                                    # alt text
+                                                    width="100%",  # image width the size of div
+                                                    className="badge-img"  # css
+                                                ),
+                                                html.Div(  # badge text
+                                                    html.P(str(next_goal(exercisesCompleted, allGoals))),  # next goal
+                                                    className="badge-text", style={"top": "20px"}  # css, text position
+                                                )
+                                            ], className="badge-div", style={"width": "40px"}  # css, badge size
+                                        ), className="badge-upper-div"  # css
+                                    )
+                                 ]
                             )
                         ]
                     ),
