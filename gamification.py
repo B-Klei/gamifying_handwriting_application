@@ -44,7 +44,14 @@ def progress_bar(progress_points, full_points):
 # Badge Icon
 def which_badge(display_badge, earned_badges_list):
     if display_badge in earned_badges_list:
-        icon_src = "assets/badge_icon_black.png"
+        if "exercise" in display_badge:
+            icon_src = "assets/badge_icon_purple.png"
+        elif "accuracy" in display_badge:
+            icon_src = "assets/badge_icon_ff0055.png"
+        elif "tilt" in display_badge:
+            icon_src = "assets/badge_icon_070091.png"
+        elif "pressure" in display_badge:
+            icon_src = "assets/badge_icon_02c42f.png"
     else:
         icon_src = "assets/badge_icon_grey.png"
 
@@ -54,8 +61,8 @@ def which_badge(display_badge, earned_badges_list):
 # alt text
 def which_alt(display_badge, earned_badges_list):
     if display_badge in earned_badges_list:
-        alt_text = "badge earned"
+        alt_text = display_badge + " earned"
     else:
-        alt_text = "badge not yet earned"
+        alt_text = display_badge + " not earned"
 
     return alt_text

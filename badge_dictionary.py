@@ -6,9 +6,9 @@ def exercise_badges_dictionary(all_goals):
     if len(all_goals) > 0:
         for goal in all_goals:
             if goal == 1:
-                badge_name = str(goal) + " exercise"
+                badge_name = str(goal) + "\nexercise"
             else:
-                badge_name = str(goal) + " exercises"
+                badge_name = str(goal) + "\nexercises"
             badge_dictionary[badge_name] = goal
     return badge_dictionary
 
@@ -19,7 +19,7 @@ def attribute_badges_dictionary(all_goals, attribute):
 
     if len(all_goals) > 0:
         for goal in all_goals:
-            badge_name = str(goal) + "x " + attribute
+            badge_name = str(goal) + "x\n" + attribute
             badge_dictionary[badge_name] = goal
     return badge_dictionary
 

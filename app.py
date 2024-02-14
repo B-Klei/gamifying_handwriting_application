@@ -206,18 +206,28 @@ app.layout = html.Div(
                                         html.Ul(  # badge list
                                             [
                                                 html.Li(  # item in badge list
-                                                    html.Div(  # badge div
-                                                        [
-                                                            html.Img(src=which_badge(badge, badgesEarned),
-                                                                 alt=which_alt(badge, badgesEarned),
-                                                                 width="100px"),
-                                                            badge
-                                                        ]
-                                                    ), style={"padding": "10px"}
+                                                    html.Div(
+                                                        html.Div(
+                                                            [
+                                                                html.Img(
+                                                                    src=which_badge(badge, badgesEarned),
+                                                                    alt=which_alt(badge, badgesEarned),
+                                                                    width="100%",
+                                                                    className="badge-img"
+                                                                ),
+                                                                html.Div(
+                                                                    html.P(badge),
+                                                                    className="badge-text"
+                                                                )
+                                                            ], className="badge-div"
+                                                        ), className="badge-upper-div"
+                                                    ),
                                                 ) for badge in badgesDictionary[category]  # for each badge in category
-                                            ], style={#"display": "inline-block",  # show in line
-                                                      "padding": "10px",  # padding
-                                                      "listStyle": "none"}  # no bullets
+                                            ], style={
+                                                #"display": "inline-block",  # show in line
+                                                "padding": "10px",  # padding
+                                                "listStyle": "none"
+                                            }  # no bullets
                                         ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
                                     ) for category in badgesDictionary  # for each category of badges
                                 ], style={"listStyle": "none", "padding": "0"}  # category list: no bullets, no padding
@@ -227,16 +237,6 @@ app.layout = html.Div(
                     style={"width": "55%", "display": "inline-block"},  # card style
                 )
             ]
-        ),
-        dbc.Row(
-            dbc.Card(
-                dbc.CardBody(
-                    [
-                        html.Img(src=r"assets/badge_icon_black.png",
-                                 alt="badge earned", width="50px")
-                    ]
-                )
-            )
         )
     ]
 )
