@@ -116,7 +116,7 @@ app.layout = html.Div(
                                     html.P("Tilt:"),
                                     html.P("Pressure:")
                                 ],
-                                style={"display": "inline-block", "line-height": "40px"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "37px"}  # display in the same line
                             ),
                             html.Div(  # attribute points
                                 children=
@@ -125,7 +125,7 @@ app.layout = html.Div(
                                     html.P(tilt.points),
                                     html.P(pressure.points)
                                 ],
-                                style={"display": "inline-block", "line-height": "40px"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "37px"}  # display in the same line
                             ),
                             html.Div(  # progress bars
                                 children=
@@ -182,7 +182,8 @@ app.layout = html.Div(
                         [
                             html.H4("Exercises"),  # heading
                             html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals),
-                                    " exercises" if exercisesCompleted > 1 else " exercise")),
+                                    " exercises" if exercisesCompleted > 1 else " exercise"),
+                                   style={"line-height": "37px"}),
                             # <- next goal
                             html.P(
                                 (
