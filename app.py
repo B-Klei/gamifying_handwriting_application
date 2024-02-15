@@ -2,6 +2,7 @@ from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
 import csv
 from gamification import *  # functions file
+from leaderboard import *  # leaderboard sorting functions
 from attribute import *  # attribute class
 from badge_dictionary import *  # dictionary of badges
 from dash.dependencies import Input, Output  # necessary for callback
