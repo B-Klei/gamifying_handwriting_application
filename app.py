@@ -7,13 +7,22 @@ from attribute import *  # attribute class
 from badge_dictionary import *  # dictionary of badges
 from dash.dependencies import Input, Output  # necessary for callback
 
-# Opening file, converting into a list of dictionaries
-with open("dummy.csv", mode='r') as file:
-    csv_reader = csv.DictReader(file)
+# Opening main file, converting into a list of dictionaries
+with open("dummy.csv", mode='r') as file:  # open file
+    csv_reader = csv.DictReader(file)  # convert rows to dictionaries
     data = []
 
     for row in csv_reader:
-        data.append(row)
+        data.append(row)  # append each dictionary to list
+
+# Opening leaderboard file, converting into a list of dictionaries
+with open("leaderboard_dummy.csv", mode='r') as file:  # open file
+    csv_reader = csv.DictReader(file)  # convert rows to dictionaries
+    leaderboard_data = []
+
+    for row in csv_reader:
+        leaderboard_data.append(row)  # append each dictionary to list
+
 
 # Dash
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
