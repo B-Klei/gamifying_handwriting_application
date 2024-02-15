@@ -185,15 +185,19 @@ app.layout = html.Div(
                     dbc.CardBody(
                         [
                             html.H4("Exercises"),  # heading
-                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals),  # next goal text
+                            html.P(
+                                ("Next badge: ", next_goal(exercisesCompleted, allGoals),  # next goal text
                                     " exercises" if exercisesCompleted > 1 else " exercise"),  # pl/sg
-                                   style={"line-height": "37px"}),
+                                style={"line-height": "37px"}
+                            ),
                             html.P(
                                 [
-                                    dbc.Progress(value=progress_bar(exercisesCompleted,
-                                                                    next_goal(exercisesCompleted, allGoals)),  # portion
-                                                 color="purple", label=exercisesCompleted,  # attribute colour, label
-                                                 style={"height": "20px", "width": "80%", "display": "inline-block"}),
+                                    dbc.Progress(
+                                        value=progress_bar(exercisesCompleted,
+                                                           next_goal(exercisesCompleted, allGoals)),  # portion
+                                            color="purple", label=exercisesCompleted,  # attribute colour, label
+                                            style={"height": "20px", "width": "80%", "display": "inline-block"}
+                                    ),
                                     html.Div(
                                         html.Div(
                                             [
@@ -211,7 +215,7 @@ app.layout = html.Div(
                                             ], className="badge-div", style={"width": "40px"}  # css, badge size
                                         ), className="badge-upper-div"  # css
                                     )
-                                 ]
+                                ]
                             )
                         ]
                     ),
