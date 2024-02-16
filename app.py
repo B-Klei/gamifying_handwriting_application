@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import csv
 from gamification import *  # functions file
 from attribute import *  # attribute class
+from badge_dictionary import *  # dictionary of badges
 from dash.dependencies import Input, Output  # necessary for callback
 
 # Opening file, converting into a list of dictionaries
@@ -20,6 +21,8 @@ app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # misc
 pointLimit = 80  # number of points awarded for achieving std_limit
 allGoals = [1, 5, 10, 25, 50, 100]  # list of all goals
+badgesEarned = []  # list of earned badges
+badgesDictionary = badges_dictionary(allGoals)  # dictionary of all the badges
 
 # exercises
 exercisesCompleted = 0  # number of completed exercises
@@ -60,80 +63,50 @@ for attempt in data:  # going through data
 
     totalPoints += totalExercisePoints  # total points counter
 
+# Badges
+for badge_category in badgesDictionary:  # going through categories
+    if badge_category == "completedExercisesBadges":  # category Completed exercises
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= exercisesCompleted:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
+    elif badge_category == "accuracyBadges":  # category Accuracy
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= accuracy.badges:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
+    elif badge_category == "tiltBadges":  # category Tilt
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= tilt.badges:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
+    elif badge_category == "pressureBadges":  # category Pressure
+        for badge in badgesDictionary[badge_category]:  # going through badges
+            if badgesDictionary[badge_category][badge] <= pressure.badges:  # if badge is earned
+                badgesEarned.append(badge)  # append badge to list of earned badges
+
 # Layout
-"""app.layout = html.Div(
-
-    children=[
-
-        html.H1(children="Avocado Analytics"),
-
-        html.P(
-
-            children=(
-
-                "Analyze the behavior of avocado prices and the number"
-
-                " of avocados sold in the US between 2015 and 2018"
-
-            ),
-
-        ),
-
-        dcc.Graph(
-
-            figure={
-
-                "data": [
-
-                    {
-
-                        "x": data["Date"],
-
-                        "y": data["AveragePrice"],
-
-                        "type": "lines",
-
-                    },
-
-                ],
-
-                "layout": {"title": "Average Price of Avocados"},
-
-            },
-
-        ),
-
-        dcc.Graph(
-
-            figure={
-
-                "data": [
-
-                    {
-
-                        "x": data["Date"],
-
-                        "y": data["Total Volume"],
-
-                        "type": "lines",
-
-                    },
-
-                ],
-
-                "layout": {"title": "Avocados Sold"},
-
-            },
-
-        ),
-
-    ]
-
-)"""
-
 app.layout = html.Div(
 
     children=[
+        dbc.Row(  # header row
+            dbc.Card(  # Student info
+                dbc.CardBody(
+                    [
+                        html.H1(data[0]["student_name"],  # Name
+                                style={"display": "inline-block"}),
+                        html.H5(["ID: ", data[0]["student_id"]],  # ID
+                                style={"display": "inline-block"}),
+                        html.H5(["Total points: ", totalPoints],  # Total points
+                                style={"display": "inline-block"}),
+                        html.H2(["Badges: ", len(badgesEarned)],  # Number of badges
+                                style={"display": "inline-block", "float": "right"})
+                    ]
+                ),
+                style={"width": "100%"},  # display full width
+            ),
+
+        ),
         dbc.Row(  # first row
             [
                 dbc.Card(  # Exercise performance
@@ -147,38 +120,59 @@ app.layout = html.Div(
                                     html.P("Tilt:"),
                                     html.P("Pressure:")
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "37px"}
                             ),
                             html.Div(  # attribute points
                                 children=
                                 [
-                                    html.P(accuracy.points),
-                                    html.P(tilt.points),
-                                    html.P(pressure.points)
+                                    html.P(accuracy.points),  # points earned for accuracy
+                                    html.P(tilt.points),  # points earned for tilt
+                                    html.P(pressure.points)  # points earned for pressure
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
+                                style={"display": "inline-block", "line-height": "37px"}
                             ),
                             html.Div(  # progress bars
                                 children=
                                 [
                                     html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),  # portion
                                                         color=accuracy.colour,  # attribute colour
-                                                        style={"height": "20px", "width": "300px"})),
-                                    html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),
-                                                        color=tilt.colour,
-                                                        style={"height": "20px", "width": "300px"})),
-                                    html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),
-                                                        color=pressure.colour,
-                                                        style={"height": "20px", "width": "300px"}))
+                                                        style={"height": "20px", "width": "300px"}),  # bar style
+                                           style={"height": "35px"}),  # paragraph style
+                                    html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),  # portion
+                                                        color=tilt.colour,  # attribute colour
+                                                        style={"height": "20px", "width": "300px"}),  # bar style
+                                           style={"height": "35px"}),  # paragraph style
+                                    html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),  # portion
+                                                        color=pressure.colour,  # attribute colour
+                                                        style={"height": "20px", "width": "300px"}),  # bar style
+                                           style={"height": "35px"})  # paragraph style
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
                             html.Div(  # badges, displayed in grey if not achieved
                                 children=
                                 [
-                                    html.P("badge" if (accuracy.points >= pointLimit) else "grey badge"),
-                                    html.P("badge" if (tilt.points >= pointLimit) else "grey badge"),
-                                    html.P("badge" if (pressure.points >= pointLimit) else "grey badge")
+                                    html.Img(  # accuracy
+                                        src="assets/badge_icon_ff0055.png" if (accuracy.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",  # image source if earned/not earned
+                                        alt="accuracy badge earned" if (accuracy.points >= pointLimit)
+                                        else "accuracy badge not earned",  # alt text if earned/not earned
+                                        width="25",  # size
+                                    ), html.Br(),  # line break
+                                    html.Img(  # tilt
+                                        src="assets/badge_icon_070091.png" if (tilt.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",  # image source if earned/not earned
+                                        alt="tilt badge earned" if (tilt.points >= pointLimit)
+                                        else "tilt badge not earned",  # alt text if earned/not earned
+                                        width="25",  # size
+                                    ), html.Br(),  # line break
+                                    html.Img(  # pressure
+                                        src="assets/badge_icon_02c42f.png" if (pressure.points >= pointLimit)
+                                        else "assets/badge_icon_grey.png",  # image source if earned/not earned
+                                        alt="pressure badge earned" if (pressure.points >= pointLimit)
+                                        else "pressure badge not earned",  # alt text if earned/not earned
+                                        width="25",  # size
+                                    ),
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
@@ -191,16 +185,37 @@ app.layout = html.Div(
                     dbc.CardBody(
                         [
                             html.H4("Exercises"),  # heading
-                            html.P(("Next badge: ", next_goal(exercisesCompleted, allGoals), " exercises")),
-                            # <- next goal
                             html.P(
-                                (
-                                    dbc.Progress(value=progress_bar(exercisesCompleted,
-                                                                    next_goal(exercisesCompleted, allGoals)),  # portion
-                                                 color="purple", label=exercisesCompleted,  # attribute colour, label
-                                                 style={"height": "20px", "width": "80%", "display": "inline-block"}),
-                                    html.P("grey badge", style={"display": "inline-block"})  # grey badge
-                                )
+                                ("Next badge: ", next_goal(exercisesCompleted, allGoals),  # next goal text
+                                    " exercises" if exercisesCompleted > 1 else " exercise"),  # pl/sg
+                                style={"line-height": "37px"}
+                            ),
+                            html.P(
+                                [
+                                    dbc.Progress(
+                                        value=progress_bar(exercisesCompleted,
+                                                           next_goal(exercisesCompleted, allGoals)),  # portion
+                                            color="purple", label=exercisesCompleted,  # attribute colour, label
+                                            style={"height": "20px", "width": "80%", "display": "inline-block"}
+                                    ),
+                                    html.Div(
+                                        html.Div(
+                                            [
+                                                html.Img(  # badge image
+                                                    src="assets/badge_icon_grey.png",  # source
+                                                    alt="next badge: " + str(next_goal(exercisesCompleted, allGoals)),
+                                                    # alt text
+                                                    width="100%",  # image width the size of div
+                                                    className="badge-img"  # css
+                                                ),
+                                                html.Div(  # badge text
+                                                    html.P(str(next_goal(exercisesCompleted, allGoals))),  # next goal
+                                                    className="badge-text", style={"top": "20px"}  # css, text position
+                                                )
+                                            ], className="badge-div", style={"width": "40px"}  # css, badge size
+                                        ), className="badge-upper-div"  # css
+                                    )
+                                ]
                             )
                         ]
                     ),
@@ -225,7 +240,64 @@ app.layout = html.Div(
                             dcc.Graph(id="attribute_graph"),  # graph, content from callback
                         ]
                     ),
-                    style={"width": "50%", "display": "inline-block"},
+                    style={"width": "45%", "display": "inline-block"},
+                ),
+                dbc.Card(  # Badge display
+                    dbc.CardBody(
+                        [
+                            html.H4("Badges"),  # Heading
+                            html.Ul(  # category list
+                                [
+                                    html.Li(  # item in category list
+                                        html.Ul(  # badge list
+                                            [
+                                                html.Li(  # item in badge list
+                                                    html.Div(  # badge
+                                                        html.Div(
+                                                            [
+                                                                html.Img(  # badge image
+                                                                    src=which_badge(badge, badgesEarned),  # source
+                                                                    alt=which_alt(badge, badgesEarned),  # alt text
+                                                                    width="100%",  # image width the size of div
+                                                                    className="badge-img"
+                                                                ),
+                                                                html.Div(
+                                                                    html.P(badge),  # badge text
+                                                                    className="badge-text"
+                                                                )
+                                                            ], className="badge-div"
+                                                        ), className="badge-upper-div"
+                                                    ),
+                                                ) for badge in badgesDictionary[category]  # for each badge in category
+                                            ], style={
+                                                "padding": "10px",  # padding
+                                                "listStyle": "none"  # no bullets
+                                            }
+                                        ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
+                                    ) for category in badgesDictionary  # for each category of badges
+                                ], style={"listStyle": "none", "padding": "0"}  # category list: no bullets, no padding
+                            )
+                        ]
+                    ),
+                    style={"width": "55%", "display": "inline-block"},  # card style
+                )
+            ]
+        ),
+        dbc.Row(
+            [
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Motivation")  # heading
+                        ]
+                    ), style={"width": "50%", "display": "inline-block"}  # card style
+                ),
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.H4("Leaderboard")  # heading
+                        ]
+                    ), style={"width": "50%", "display": "inline-block"}  # card style
                 )
             ]
         )

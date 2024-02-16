@@ -39,3 +39,32 @@ def progress_bar(progress_points, full_points):
     progress_portion = 100*progress_points/full_points
 
     return progress_portion
+
+
+# Badge Icon
+def which_badge(display_badge, earned_badges_list):
+    if display_badge in earned_badges_list:
+        if "exercise" in display_badge:
+            icon_src = "assets/badge_icon_purple.png"
+        elif "accuracy" in display_badge:
+            icon_src = "assets/badge_icon_ff0055.png"
+        elif "tilt" in display_badge:
+            icon_src = "assets/badge_icon_070091.png"
+        elif "pressure" in display_badge:
+            icon_src = "assets/badge_icon_02c42f.png"
+        else:
+            icon_src = "assets/badge_icon_black.png"
+    else:
+        icon_src = "assets/badge_icon_grey.png"
+
+    return icon_src
+
+
+# alt text
+def which_alt(display_badge, earned_badges_list):
+    if display_badge in earned_badges_list:
+        alt_text = display_badge + " earned"
+    else:
+        alt_text = display_badge + " not earned"
+
+    return alt_text
