@@ -299,21 +299,21 @@ app.layout = html.Div(
                     dbc.CardBody(
                         [
                             html.H4("Leaderboard"),  # heading
-                            html.Ul(
+                            html.Ul(  # leaderboard list
                                 [
-                                    html.Li(
+                                    html.Li(  # item in the list
                                         dbc.Card(
                                             dbc.CardBody(
                                                 [
-                                                    html.H6(
+                                                    html.H6(  # position
                                                         student["position"],
                                                         style={"display": "inline-block"}
                                                     ),
-                                                    html.H5(
+                                                    html.H5(  # student's name
                                                         student["student_name"],
                                                         style={"display": "inline-block"}
                                                     ),
-                                                    html.P(
+                                                    html.P(  # total points
                                                         ["Points: ", student["total_points"]],
                                                         style={
                                                             "display": "inline-block",
@@ -322,17 +322,18 @@ app.layout = html.Div(
                                                             "font-size": "15px"
                                                         }
                                                     ),
-                                                    html.H5(
+                                                    html.H5(  # number of badges
                                                         student["total_badges"],
                                                         style={"float": "right", "display": "inline-block"}
                                                     )
                                                 ]
                                             ),
-                                            className="you" if (student["student_id"] == data[0]["student_id"])
+                                            className="you"  # different class for this student
+                                            if (student["student_id"] == data[0]["student_id"])
                                             else ""
                                         )
-                                    ) for student in leaderboard(leaderboard_data)
-                                ], style={"listStyle": "none", "padding": "0"}
+                                    ) for student in leaderboard(leaderboard_data)  # for each student in sorted list
+                                ], style={"listStyle": "none", "padding": "0"}  # no bullets, no padding
                             )
                         ]
                     ), style={"width": "35%", "display": "inline-block"}  # card style
