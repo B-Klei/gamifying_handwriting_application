@@ -298,16 +298,51 @@ app.layout = html.Div(
                 dbc.Card(
                     dbc.CardBody(
                         [
-                            html.H4("Motivation")  # heading
+                            html.H4("Leaderboard"),  # heading
+                            html.Ul(
+                                [
+                                    html.Li(
+                                        dbc.Card(
+                                            dbc.CardBody(
+                                                [
+                                                    html.H6(
+                                                        student["position"],
+                                                        style={"display": "inline-block"}
+                                                    ),
+                                                    html.H5(
+                                                        student["student_name"],
+                                                        style={"display": "inline-block"}
+                                                    ),
+                                                    html.P(
+                                                        ["Points: ", student["total_points"]],
+                                                        style={
+                                                            "display": "inline-block",
+                                                            "position": "relative",
+                                                            "margin-left": "20px",
+                                                            "font-size": "15px"
+                                                        }
+                                                    ),
+                                                    html.H5(
+                                                        student["total_badges"],
+                                                        style={"float": "right", "display": "inline-block"}
+                                                    )
+                                                ]
+                                            ),
+                                            className="you" if (student["student_id"] == data[0]["student_id"])
+                                            else ""
+                                        )
+                                    ) for student in leaderboard(leaderboard_data)
+                                ], style={"listStyle": "none", "padding": "0"}
+                            )
                         ]
-                    ), style={"width": "50%", "display": "inline-block"}  # card style
+                    ), style={"width": "35%", "display": "inline-block"}  # card style
                 ),
                 dbc.Card(
                     dbc.CardBody(
                         [
-                            html.H4("Leaderboard")  # heading
+                            html.H4("Motivation")  # heading
                         ]
-                    ), style={"width": "50%", "display": "inline-block"}  # card style
+                    ), style={"width": "65%", "display": "inline-block"}  # card style
                 )
             ]
         )

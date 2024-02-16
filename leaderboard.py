@@ -23,7 +23,8 @@ def sort_points(sorted_badges, dictionary_list):
                 same_badge_list.append(student["total_points"])  # append points to list
 
         same_badge_list_sorted = sorted(same_badge_list)  # sort list
-        same_badge_list_sorted.reverse()  # reverse order
+        if int(same_badge_list_sorted[0]) < int(same_badge_list_sorted[-1]):
+            same_badge_list_sorted.reverse()  # reverse order
         list_points.append(same_badge_list_sorted)  # append list to another list
 
     return list_points
@@ -35,13 +36,22 @@ def leaderboard(dictionary_list):
     list_points = sort_points(sorted_badges, dictionary_list)  # secondary sorting
     leaderboard_list = []
     i = 0
+    position = 1
 
     for lists in list_points:  # go through sorted list
         for points in lists:
+
             for student in dictionary_list:
                 if (sorted_badges[i] == int(student["total_badges"])) and (points == student["total_points"]):
                     # find the correct student based on number of badges and points
-                    leaderboard_list.append(student)  # append student's data to list
+                    if student not in leaderboard_list:
+                        student["position"] = position
+                        leaderboard_list.append(student)  # append student's data to list
+                        break
+
+            position += 1
+            if position == len(dictionary_list)+1:
+                break
         i += 1
 
     return leaderboard_list
