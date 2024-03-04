@@ -341,7 +341,24 @@ app.layout = html.Div(
                 dbc.Card(
                     dbc.CardBody(
                         [
-                            html.H4("Motivation")  # heading
+                            html.H4("Practice"),  # heading
+                            dcc.Graph(
+                               figure={
+                                    "data": [
+                                        {
+                                            "x": [student["time_begin"][:10] for student in data],  # x-axis: dates
+                                            "y": accuracy.point_list,  # y-axis: points earned for accuracy
+                                            "type": "lines",  # graph type: line graph
+                                            "name": "accuracy",
+                                            "line": dict(color=accuracy.colour),  # line colour
+                                        }
+                                    ],
+                                    "layout": {
+                                        "yaxis": {"range": [0, 100], "title": "points"},  # y-axis fixed to full range of points, description
+                                        "xaxis": {"title": "attempt"}  # x-axis description
+                                    }
+                                }
+                            )
                         ]
                     ), style={"width": "65%", "display": "inline-block"}  # card style
                 )
