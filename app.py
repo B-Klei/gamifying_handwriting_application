@@ -122,7 +122,7 @@ app.layout = html.Div(
                 dbc.Card(  # Exercise performance
                     dbc.CardBody(
                         [
-                            html.H4("Exercise performance"),  # heading
+                            html.H4("Last exercise"),  # heading
                             html.Div(  # attribute names
                                 children=
                                 [
@@ -135,57 +135,56 @@ app.layout = html.Div(
                             html.Div(  # attribute points
                                 children=
                                 [
-                                    html.P(accuracy.points),  # points earned for accuracy
-                                    html.P(tilt.points),  # points earned for tilt
-                                    html.P(pressure.points)  # points earned for pressure
+                                    html.H5(accuracy.points, style={"margin": "17px 0px"}),  # points earned for accuracy
+                                    html.H5(tilt.points, style={"margin": "17px 0px"}),  # points earned for tilt
+                                    html.H5(pressure.points, style={"margin": "17px 0px"})  # points earned for pressure
+                                ],
+                                style={"display": "inline-block", "margin": "0px 25px 0px 10px"}
+                            ),
+html.Div(
+                                children=
+                                [
+                                    html.P("0", style={"font-size": "12px", "margin": "7px 0px"}),
+                                    html.P("0", style={"font-size": "12px", "margin": "7px 0px"}),
+                                    html.P("0", style={"font-size": "12px", "margin": "7px 0px"})
                                 ],
                                 style={"display": "inline-block", "line-height": "37px"}
                             ),
                             html.Div(  # progress bars
                                 children=
                                 [
-                                    html.P(dbc.Progress(value=progress_bar(accuracy.points, pointLimit),  # portion
-                                                        color=accuracy.colour,  # attribute colour
-                                                        style={"height": "20px", "width": "300px"}),  # bar style
-                                           style={"height": "35px"}),  # paragraph style
-                                    html.P(dbc.Progress(value=progress_bar(tilt.points, pointLimit),  # portion
+                                    html.P(
+                                        dbc.Progress(
+                                            value=progress_bar(accuracy.points, pointLimit),  # portion
+                                            color=accuracy.colour,  # attribute colour
+                                            style={"height": "20px", "width": "300px"}  # bar style
+                                        ),
+                                        style={"height": "35px"}  # paragraph style
+                                    ),
+                                    html.P(
+                                        dbc.Progress(value=progress_bar(tilt.points, pointLimit),  # portion
                                                         color=tilt.colour,  # attribute colour
                                                         style={"height": "20px", "width": "300px"}),  # bar style
-                                           style={"height": "35px"}),  # paragraph style
-                                    html.P(dbc.Progress(value=progress_bar(pressure.points, pointLimit),  # portion
+                                        style={"height": "35px"}  # paragraph style
+                                    ),
+                                    html.P(
+                                        dbc.Progress(value=progress_bar(pressure.points, pointLimit),  # portion
                                                         color=pressure.colour,  # attribute colour
                                                         style={"height": "20px", "width": "300px"}),  # bar style
-                                           style={"height": "35px"})  # paragraph style
+                                        style={"height": "35px"}  # paragraph style
+                                    )
                                 ],
                                 style={"display": "inline-block"}  # display in the same line
                             ),
-                            html.Div(  # badges, displayed in grey if not achieved
+                            html.Div(
                                 children=
                                 [
-                                    html.Img(  # accuracy
-                                        src="assets/badge_icon_ff0055.png" if (accuracy.points >= pointLimit)
-                                        else "assets/badge_icon_grey.png",  # image source if earned/not earned
-                                        alt="accuracy badge earned" if (accuracy.points >= pointLimit)
-                                        else "accuracy badge not earned",  # alt text if earned/not earned
-                                        width="25",  # size
-                                    ), html.Br(),  # line break
-                                    html.Img(  # tilt
-                                        src="assets/badge_icon_070091.png" if (tilt.points >= pointLimit)
-                                        else "assets/badge_icon_grey.png",  # image source if earned/not earned
-                                        alt="tilt badge earned" if (tilt.points >= pointLimit)
-                                        else "tilt badge not earned",  # alt text if earned/not earned
-                                        width="25",  # size
-                                    ), html.Br(),  # line break
-                                    html.Img(  # pressure
-                                        src="assets/badge_icon_02c42f.png" if (pressure.points >= pointLimit)
-                                        else "assets/badge_icon_grey.png",  # image source if earned/not earned
-                                        alt="pressure badge earned" if (pressure.points >= pointLimit)
-                                        else "pressure badge not earned",  # alt text if earned/not earned
-                                        width="25",  # size
-                                    ),
+                                    html.P(pointLimit, style={"font-size": "12px", "margin": "7px 0px"}),
+                                    html.P(pointLimit, style={"font-size": "12px", "margin": "7px 0px"}),
+                                    html.P(pointLimit, style={"font-size": "12px", "margin": "7px 0px"})
                                 ],
-                                style={"display": "inline-block"}  # display in the same line
-                            ),
+                                style={"display": "inline-block", "line-height": "37px"}
+                            )
 
                         ]
                     ),
@@ -235,6 +234,101 @@ app.layout = html.Div(
         ),
         dbc.Row(  # second row
             [
+
+                dbc.Card(  # Badge display
+                    dbc.CardBody(
+                        [
+                            html.Div(
+                                [
+                                    html.H4("Badges"),  # Heading
+                                    html.Ul(  # category list
+                                        [
+                                            html.Li(  # item in category list
+                                                html.Ul(  # badge list
+                                                    [
+                                                        html.Li(  # item in badge list
+                                                            html.Div(  # badge
+                                                                html.Div(
+                                                                    [
+                                                                        html.Img(  # badge image
+                                                                            src=which_badge(badge, badgesEarned),  # source
+                                                                            alt=which_alt(badge, badgesEarned),  # alt text
+                                                                            width="100%",  # image width the size of div
+                                                                            className="badge-img"
+                                                                        ),
+                                                                        html.Div(
+                                                                            html.P(badge),  # badge text
+                                                                            className="badge-text"
+                                                                        )
+                                                                    ], className="badge-div"
+                                                                ), className="badge-upper-div"
+                                                            ),
+                                                        ) for badge in badgesDictionary[category]  # for each badge in category
+                                                    ], style={
+                                                        "padding": "10px",  # padding
+                                                        "listStyle": "none"  # no bullets
+                                                    }
+                                                ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
+                                            ) for category in badgesDictionary  # for each category of badges
+                                        ], style={"listStyle": "none", "padding": "0"}  # category list: no bullets, no padding
+                                    )
+                                ], style={"maxHeight": "400px", "overflow": "scroll"}  # make it scrollable
+                            )
+                        ]
+                    ),
+                    style={"width": "55%", "display": "inline-block"},  # card style
+                ),
+                dbc.Card(  # Leaderboard
+                    dbc.CardBody(
+                        [
+                            html.Div(
+                                [
+                                    html.H4("Leaderboard"),  # heading
+                                    html.Ul(  # leaderboard list
+                                        [
+                                            html.Li(  # item in the list
+                                                dbc.Card(
+                                                    dbc.CardBody(
+                                                        [
+                                                            html.H6(  # position
+                                                                student["position"],
+                                                                style={"display": "inline-block"}
+                                                            ),
+                                                            html.H6(  # student's name
+                                                                student["student_name"],
+                                                                style={"display": "inline-block", "margin": "0px 20px"}
+                                                            ),
+                                                            html.P(  # total points
+                                                                ["Points: ", student["total_points"]],
+                                                                style={
+                                                                    "display": "inline-block",
+                                                                    "position": "relative",
+                                                                    "margin-left": "20px",
+                                                                    "font-size": "15px"
+                                                                }
+                                                            ),
+                                                            html.H5(  # number of badges
+                                                                student["total_badges"],
+                                                                style={"float": "right", "display": "inline-block"}
+                                                            )
+                                                        ]
+                                                    ),
+                                                    className="you"  # different class for this student
+                                                    if (student["student_id"] == data[0]["student_id"])
+                                                    else ""
+                                                )
+                                            ) for student in leaderboard(leaderboard_data)  # for each student in sorted list
+                                        ], style={"listStyle": "none", "padding": "0"}  # no bullets, no padding
+                                    )
+                                ], style={"maxHeight": "400px", "overflow": "scroll"}  # make it scrollable
+                            )
+                        ]
+                    ), style={"width": "35%", "display": "inline-block"}  # card style
+                ),
+            ]
+        ),
+        dbc.Row(
+            [
                 dbc.Card(  # Attribute graph
                     dbc.CardBody(
                         [
@@ -250,100 +344,15 @@ app.layout = html.Div(
                             dcc.Graph(id="attribute_graph"),  # graph, content from callback
                         ]
                     ),
-                    style={"width": "45%", "display": "inline-block"},
+                    style={"width": "50%", "display": "inline-block"},
                 ),
-                dbc.Card(  # Badge display
-                    dbc.CardBody(
-                        [
-                            html.H4("Badges"),  # Heading
-                            html.Ul(  # category list
-                                [
-                                    html.Li(  # item in category list
-                                        html.Ul(  # badge list
-                                            [
-                                                html.Li(  # item in badge list
-                                                    html.Div(  # badge
-                                                        html.Div(
-                                                            [
-                                                                html.Img(  # badge image
-                                                                    src=which_badge(badge, badgesEarned),  # source
-                                                                    alt=which_alt(badge, badgesEarned),  # alt text
-                                                                    width="100%",  # image width the size of div
-                                                                    className="badge-img"
-                                                                ),
-                                                                html.Div(
-                                                                    html.P(badge),  # badge text
-                                                                    className="badge-text"
-                                                                )
-                                                            ], className="badge-div"
-                                                        ), className="badge-upper-div"
-                                                    ),
-                                                ) for badge in badgesDictionary[category]  # for each badge in category
-                                            ], style={
-                                                "padding": "10px",  # padding
-                                                "listStyle": "none"  # no bullets
-                                            }
-                                        ), style={"display": "inline-block", "padding": "5px"},  # show in line, padding
-                                    ) for category in badgesDictionary  # for each category of badges
-                                ], style={"listStyle": "none", "padding": "0"}  # category list: no bullets, no padding
-                            )
-                        ]
-                    ),
-                    style={"width": "55%", "display": "inline-block"},  # card style
-                )
-            ]
-        ),
-        dbc.Row(
-            [
+
                 dbc.Card(
                     dbc.CardBody(
                         [
-                            html.H4("Leaderboard"),  # heading
-                            html.Ul(  # leaderboard list
-                                [
-                                    html.Li(  # item in the list
-                                        dbc.Card(
-                                            dbc.CardBody(
-                                                [
-                                                    html.H6(  # position
-                                                        student["position"],
-                                                        style={"display": "inline-block"}
-                                                    ),
-                                                    html.H5(  # student's name
-                                                        student["student_name"],
-                                                        style={"display": "inline-block"}
-                                                    ),
-                                                    html.P(  # total points
-                                                        ["Points: ", student["total_points"]],
-                                                        style={
-                                                            "display": "inline-block",
-                                                            "position": "relative",
-                                                            "margin-left": "20px",
-                                                            "font-size": "15px"
-                                                        }
-                                                    ),
-                                                    html.H5(  # number of badges
-                                                        student["total_badges"],
-                                                        style={"float": "right", "display": "inline-block"}
-                                                    )
-                                                ]
-                                            ),
-                                            className="you"  # different class for this student
-                                            if (student["student_id"] == data[0]["student_id"])
-                                            else ""
-                                        )
-                                    ) for student in leaderboard(leaderboard_data)  # for each student in sorted list
-                                ], style={"listStyle": "none", "padding": "0"}  # no bullets, no padding
-                            )
+                            html.H4("Practice")  # heading
                         ]
-                    ), style={"width": "35%", "display": "inline-block"}  # card style
-                ),
-                dbc.Card(
-                    dbc.CardBody(
-                        [
-                            html.H4("Motivation")  # heading
-                        ]
-                    ), style={"width": "65%", "display": "inline-block"}  # card style
+                    ), style={"width": "50%", "display": "inline-block"}  # card style
                 )
             ]
         )
