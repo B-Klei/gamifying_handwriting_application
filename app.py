@@ -141,7 +141,7 @@ app.layout = html.Div(
                                 ],
                                 style={"display": "inline-block", "margin": "0px 25px 0px 10px"}
                             ),
-html.Div(
+                            html.Div(
                                 children=
                                 [
                                     html.P("0", style={"font-size": "12px", "margin": "7px 0px"}),
