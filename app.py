@@ -1,11 +1,12 @@
 from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output  # necessary for callback
 import csv
 from gamification import *  # functions file
 from leaderboard import *  # leaderboard sorting functions
 from attribute import *  # attribute class
 from badge_dictionary import *  # dictionary of badges
-from dash.dependencies import Input, Output  # necessary for callback
+from practice import *  # practice
 
 # Opening main file, converting into a list of dictionaries
 with open("dummy.csv", mode='r') as file:  # open file
@@ -350,21 +351,20 @@ app.layout = html.Div(
                 dbc.Card(
                     dbc.CardBody(
                         [
-                            html.H4("Practice"),  # heading
+                            html.H4("Practice last week"),  # heading
                             dcc.Graph(
                                figure={
                                     "data": [
                                         {
-                                            "x": [student["time_begin"][:10] for student in data],  # x-axis: dates
-                                            "y": accuracy.point_list,  # y-axis: points earned for accuracy
-                                            "type": "lines",  # graph type: line graph
-                                            "name": "accuracy",
-                                            "line": dict(color=accuracy.colour),  # line colour
+                                            "x": last_week(list(frequency(data))[-1]),  # x-axis: dates
+                                            "y": [str(x)[:5] for x in freq_last_week(frequency(data))],  # y-axis: number of times practised
+                                            "type": "bar",  # graph type: bar graph
+                                            "marker": {"color": "purple"}  # bar colour
                                         }
                                     ],
                                     "layout": {
-                                        "yaxis": {"range": [0, 100], "title": "points"},  # y-axis fixed to full range of points, description
-                                        "xaxis": {"title": "attempt"}  # x-axis description
+                                        "yaxis": {"title": "points"},  # y-axis description
+                                        "xaxis": {"title": "dates"}  # x-axis description
                                     }
                                 }
                             )

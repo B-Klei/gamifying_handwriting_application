@@ -1,5 +1,6 @@
 import datetime
 
+
 # Number of times practiced per day
 def frequency(dictionary_list):
     practice_dates = []
@@ -30,3 +31,19 @@ def last_week(date_csv):
     week.reverse()
 
     return week
+
+
+# List of number of times practised in week
+def freq_last_week(frequency_dict):
+    last_day = list(frequency_dict)[-1]
+    frequency_list = []
+
+    for day in last_week(last_day):
+        if day in frequency_dict:
+            for log in frequency_dict:
+                if log == day:
+                    frequency_list.append(frequency_dict[log])
+        else:
+            frequency_list.append(0)
+
+    return frequency_list
