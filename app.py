@@ -363,7 +363,7 @@ app.layout = html.Div(
                                         }
                                     ],
                                     "layout": {
-                                        "yaxis": {"title": "points"},  # y-axis description
+                                        "yaxis": {"title": "number of times practised"},  # y-axis description
                                         "xaxis": {"title": "dates"}  # x-axis description
                                     }
                                 }
